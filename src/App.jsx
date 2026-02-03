@@ -1,33 +1,19 @@
 import '@/styles/styles.scss';
-import {
-  QueryClient,
-  QueryClientProvider
-} from '@tanstack/react-query';
-import { ConfigProvider } from 'antd';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
-import Home from './pages/Home';
+import AuthGuard from './AuthGuard';
+import Home from './pages/Home/Loadable';
 
-const queryClient = new QueryClient()
 
 function App() {
-
   return (
-    <ConfigProvider
-      theme={{
-        token: {
-          colorPrimary: '#2761EA',
-        },
-      }}
-    >
-      <QueryClientProvider client={queryClient}>
-        <BrowserRouter>
-          <Routes>
-            <Route path="/" element={<Home />} />
-          </Routes>
-        </BrowserRouter>
-      </QueryClientProvider>
-
-    </ConfigProvider>
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route element={<AuthGuard />}>
+          <Route path="/dashboard" element={<Home />} />
+        </Route>
+      </Routes>
+    </BrowserRouter>
   )
 }
 

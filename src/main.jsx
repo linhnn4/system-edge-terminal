@@ -1,9 +1,28 @@
-import { StrictMode } from 'react'
-import { createRoot } from 'react-dom/client'
-import App from './App.jsx'
+import '@/styles/styles.scss';
+import {
+  QueryClient,
+  QueryClientProvider
+} from '@tanstack/react-query';
+import { ConfigProvider } from 'antd';
+import { StrictMode } from 'react';
+import { createRoot } from 'react-dom/client';
+import App from './App.jsx';
+
+const queryClient = new QueryClient()
+
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
-    <App />
+    <ConfigProvider
+      theme={{
+        token: {
+          colorPrimary: '#2761EA',
+        },
+      }}
+    >
+      <QueryClientProvider client={queryClient}>
+        <App />
+      </QueryClientProvider>
+    </ConfigProvider>
   </StrictMode>,
 )
