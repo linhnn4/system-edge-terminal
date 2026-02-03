@@ -1,82 +1,232 @@
+// =============================================
+// SCSS Variables
+// =============================================
+
+// Layout
+$width-1280: 80rem;
+$height-900: 56.25rem;
+
+// Stroke
+$stroke-weight-2: 0.125rem;
+$stroke-weight-1_67: 0.0625rem;
+$stroke-weight-1_17: 0.0625rem;
+$stroke-weight-1_5: 0.0625rem;
+$stroke-weight-1: 0.0625rem;
+
+// Opacity
+$opacity-100: 1;
+
+// Line Height
+$line-height-32: 2rem;
+$line-height-28: 1.75rem;
+$line-height-20: 1.25rem;
+$line-height-16: 1rem;
+$line-height-15: 0.9375rem;
+
+// Letter Spacing
+$letter-spacing--0_6: -0.6px;
+$letter-spacing--0_4: -0.4px;
+$letter-spacing-0_25: -0.25px;
+$letter-spacing-0_6: 0.6px;
+$letter-spacing-0_3: 0.3px;
+
+// Item Spacing
+$item-spacing-xxs: 0.25rem;
+$item-spacing-xs: 0.5rem;
+$item-spacing-618_22: 38.625rem;
+$item-spacing-390_3: 24.375rem;
+$item-spacing-372_4: 23.25rem;
+$item-spacing-299_52: 18.6875rem;
+$item-spacing-103_5: 6.4375rem;
+$item-spacing-74_18: 4.625rem;
+$item-spacing-69_59: 4.3125rem;
+$item-spacing-63_27: 3.9375rem;
+$item-spacing-43_25: 2.6875rem;
+$item-spacing-6: 0.375rem;
+
+// Font Weight
+$font-weight-700: 700;
+$font-weight-600: 600;
+$font-weight-500: 500;
+$font-weight-400: 400;
+
+// Font Size
+$font-size-24: 1.5rem;
+$font-size-18: 1.125rem;
+$font-size-14: 0.875rem;
+$font-size-12: 0.75rem;
+$font-size-11: 0.6875rem;
+$font-size-10: 0.625rem;
+
+// Font Family
+$font-family-Font-1: "Inter", sans-serif;
+
+// Colors - White & Black
+$color-white-solid: #ffffff;
+$color-black-solid: #000000;
+
+// Colors - Spring Green
+$color-spring-green-50020: #10b981;
+$color-spring-green-500: #10b981;
+$color-spring-green-40010: #10b981;
+$color-spring-green-400: #34d399;
+
+// Colors - Red
+$color-red-60010: #ef4444;
+$color-red-600: #ef4444;
+$color-red-400: #f87171;
+
+// Colors - Orange
+$color-orange-40020: #f97316;
+$color-orange-40010: #f97316;
+$color-orange-400: #f97316;
+$color-orange-300: #fb923c;
+$color-orange-200: #fdba74;
+
+// Colors - Grey
+$color-grey-90080: #0f172a;
+$color-grey-90050: #0f172a;
+$color-grey-900: #0f172a;
+$color-grey-80050: #1e293b;
+$color-grey-800: #1e293b;
+$color-grey-70050: #334155;
+$color-grey-700: #334155;
+$color-grey-600: #475569;
+$color-grey-500: #64748b;
+$color-grey-400: #94a3b8;
+$color-grey-300: #cbd5e1;
+$color-grey-200: #e2e8f0;
+$color-grey-100: #f1f5f9;
+
+// Colors - Blue
+$color-blue-500: #4f46e5;
+$color-blue-40040: #6366f1;
+$color-blue-40020: #6366f1;
+$color-blue-40010: #6366f1;
+$color-blue-400: #6366f1;
+$color-blue-200: #a5b4fc;
+
+// Colors - Azure
+$color-azure-60030: #448bff;
+$color-azure-60020: #448bff;
+$color-azure-60010: #448bff;
+$color-azure-6000: #448bff;
+$color-azure-600: #448bff;
+$color-azure-400: #60a5fa;
+
+// =============================================
+// CSS Custom Properties (mapped from SCSS)
+// =============================================
 :root {
-  --width-1280: 80rem;
-  --stroke-weight-2: 0.125rem;
-  --stroke-weight-1-67: 0.0625rem;
-  --stroke-weight-1-17: 0.0625rem;
-  --stroke-weight-1-5: 0.0625rem;
-  --stroke-weight-1: 0.0625rem;
-  --opacity-100: 1;
-  --line-height-32: 2rem;
-  --line-height-28: 1.75rem;
-  --line-height-20: 1.25rem;
-  --line-height-16: 1rem;
-  --line-height-15: 0.9375rem;
-  --letter-spacing--0_6: -0.6px;
-  --letter-spacing--0_4: -0.4px;
-  --letter-spacing-0_25: -0.25px;
-  --letter-spacing-0_6: 0.6px;
-  --letter-spacing-0_3: 0.3px;
-  --item-spacing-xxs: 0.25rem;
-  --item-spacing-xs: 0.5rem;
-  --item-spacing-618-22: 38.625rem;
-  --item-spacing-390-3: 24.375rem;
-  --item-spacing-372-4: 23.25rem;
-  --item-spacing-299-52: 18.6875rem;
-  --item-spacing-103-5: 6.4375rem;
-  --item-spacing-74-18: 4.625rem;
-  --item-spacing-69-59: 4.3125rem;
-  --item-spacing-63-27: 3.9375rem;
-  --item-spacing-43-25: 2.6875rem;
-  --item-spacing-6: 0.375rem;
-  --height-900: 56.25rem;
-  --font-weight-700: 700;
-  --font-weight-600: 600;
-  --font-weight-500: 500;
-  --font-weight-400: 400;
-  --font-size-24: 1.5rem;
-  --font-size-18: 1.125rem;
-  --font-size-14: 0.875rem;
-  --font-size-12: 0.75rem;
-  --font-size-11: 0.6875rem;
-  --font-size-10: 0.625rem;
-  --font-family-Font-1: "Inter", sans-serif;
-  --color-white-solid: #ffffff;
-  --color-spring-green-50020: #10b981;
-  --color-spring-green-500: #10b981;
-  --color-spring-green-40010: #10b981;
-  --color-spring-green-400: #34d399;
-  --color-red-60010: #ef4444;
-  --color-red-600: #ef4444;
-  --color-red-400: #f87171;
-  --color-orange-40020: #f97316;
-  --color-orange-40010: #f97316;
-  --color-orange-400: #f97316;
-  --color-orange-300: #fb923c;
-  --color-orange-200: #fdba74;
-  --color-grey-90080: #0f172a;
-  --color-grey-90050: #0f172a;
-  --color-grey-900: #0f172a;
-  --color-grey-80050: #1e293b;
-  --color-grey-800: #1e293b;
-  --color-grey-70050: #334155;
-  --color-grey-700: #334155;
-  --color-grey-600: #475569;
-  --color-grey-500: #64748b;
-  --color-grey-400: #94a3b8;
-  --color-grey-300: #cbd5e1;
-  --color-grey-200: #e2e8f0;
-  --color-grey-100: #f1f5f9;
-  --color-blue-500: #4f46e5;
-  --color-blue-40040: #6366f1;
-  --color-blue-40020: #6366f1;
-  --color-blue-40010: #6366f1;
-  --color-blue-400: #6366f1;
-  --color-blue-200: #a5b4fc;
-  --color-black-solid: #000000;
-  --color-azure-60030: #448bff;
-  --color-azure-60020: #448bff;
-  --color-azure-60010: #448bff;
-  --color-azure-6000: #448bff;
-  --color-azure-600: #448bff;
-  --color-azure-400: #60a5fa;
+  // Layout
+  --width-1280: #{$width-1280};
+  --height-900: #{$height-900};
+
+  // Stroke
+  --stroke-weight-2: #{$stroke-weight-2};
+  --stroke-weight-1-67: #{$stroke-weight-1_67};
+  --stroke-weight-1-17: #{$stroke-weight-1_17};
+  --stroke-weight-1-5: #{$stroke-weight-1_5};
+  --stroke-weight-1: #{$stroke-weight-1};
+
+  // Opacity
+  --opacity-100: #{$opacity-100};
+
+  // Line Height
+  --line-height-32: #{$line-height-32};
+  --line-height-28: #{$line-height-28};
+  --line-height-20: #{$line-height-20};
+  --line-height-16: #{$line-height-16};
+  --line-height-15: #{$line-height-15};
+
+  // Letter Spacing
+  --letter-spacing--0_6: #{$letter-spacing--0_6};
+  --letter-spacing--0_4: #{$letter-spacing--0_4};
+  --letter-spacing-0_25: #{$letter-spacing-0_25};
+  --letter-spacing-0_6: #{$letter-spacing-0_6};
+  --letter-spacing-0_3: #{$letter-spacing-0_3};
+
+  // Item Spacing
+  --item-spacing-xxs: #{$item-spacing-xxs};
+  --item-spacing-xs: #{$item-spacing-xs};
+  --item-spacing-618-22: #{$item-spacing-618_22};
+  --item-spacing-390-3: #{$item-spacing-390_3};
+  --item-spacing-372-4: #{$item-spacing-372_4};
+  --item-spacing-299-52: #{$item-spacing-299_52};
+  --item-spacing-103-5: #{$item-spacing-103_5};
+  --item-spacing-74-18: #{$item-spacing-74_18};
+  --item-spacing-69-59: #{$item-spacing-69_59};
+  --item-spacing-63-27: #{$item-spacing-63_27};
+  --item-spacing-43-25: #{$item-spacing-43_25};
+  --item-spacing-6: #{$item-spacing-6};
+
+  // Font Weight
+  --font-weight-700: #{$font-weight-700};
+  --font-weight-600: #{$font-weight-600};
+  --font-weight-500: #{$font-weight-500};
+  --font-weight-400: #{$font-weight-400};
+
+  // Font Size
+  --font-size-24: #{$font-size-24};
+  --font-size-18: #{$font-size-18};
+  --font-size-14: #{$font-size-14};
+  --font-size-12: #{$font-size-12};
+  --font-size-11: #{$font-size-11};
+  --font-size-10: #{$font-size-10};
+
+  // Font Family
+  --font-family-Font-1: #{$font-family-Font-1};
+
+  // Colors - White & Black
+  --color-white-solid: #{$color-white-solid};
+  --color-black-solid: #{$color-black-solid};
+
+  // Colors - Spring Green
+  --color-spring-green-50020: #{$color-spring-green-50020};
+  --color-spring-green-500: #{$color-spring-green-500};
+  --color-spring-green-40010: #{$color-spring-green-40010};
+  --color-spring-green-400: #{$color-spring-green-400};
+
+  // Colors - Red
+  --color-red-60010: #{$color-red-60010};
+  --color-red-600: #{$color-red-600};
+  --color-red-400: #{$color-red-400};
+
+  // Colors - Orange
+  --color-orange-40020: #{$color-orange-40020};
+  --color-orange-40010: #{$color-orange-40010};
+  --color-orange-400: #{$color-orange-400};
+  --color-orange-300: #{$color-orange-300};
+  --color-orange-200: #{$color-orange-200};
+
+  // Colors - Grey
+  --color-grey-90080: #{$color-grey-90080};
+  --color-grey-90050: #{$color-grey-90050};
+  --color-grey-900: #{$color-grey-900};
+  --color-grey-80050: #{$color-grey-80050};
+  --color-grey-800: #{$color-grey-800};
+  --color-grey-70050: #{$color-grey-70050};
+  --color-grey-700: #{$color-grey-700};
+  --color-grey-600: #{$color-grey-600};
+  --color-grey-500: #{$color-grey-500};
+  --color-grey-400: #{$color-grey-400};
+  --color-grey-300: #{$color-grey-300};
+  --color-grey-200: #{$color-grey-200};
+  --color-grey-100: #{$color-grey-100};
+
+  // Colors - Blue
+  --color-blue-500: #{$color-blue-500};
+  --color-blue-40040: #{$color-blue-40040};
+  --color-blue-40020: #{$color-blue-40020};
+  --color-blue-40010: #{$color-blue-40010};
+  --color-blue-400: #{$color-blue-400};
+  --color-blue-200: #{$color-blue-200};
+
+  // Colors - Azure
+  --color-azure-60030: #{$color-azure-60030};
+  --color-azure-60020: #{$color-azure-60020};
+  --color-azure-60010: #{$color-azure-60010};
+  --color-azure-6000: #{$color-azure-6000};
+  --color-azure-600: #{$color-azure-600};
+  --color-azure-400: #{$color-azure-400};
 }

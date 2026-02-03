@@ -1,1 +1,7 @@
-@use "variables";
+@use "variables" as *;
+
+body {
+  margin: 0;
+  font-family: var(--font-family-Font-1);
+  color: $color-azure-400;
+}
