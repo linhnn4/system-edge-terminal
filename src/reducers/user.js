@@ -2,7 +2,7 @@ import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 
 const initialState = {
-  isLoggedIn: false,
+  isLoggedIn: true,
   username: null,
 };
 

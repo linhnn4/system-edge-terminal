@@ -137,7 +137,7 @@ body {
   width: 100%;
   display: flex;
   flex-direction: column;
-  gap: 1.25rem;
+  gap: 1rem;
   .ant-form-item {
     margin-bottom: 0;
     .ant-form-item-label {
@@ -274,9 +274,9 @@ body {
   font-weight: var(--font-weight-400, 400);
   line-height: var(--line-height-20, 1.25rem); /* 142.857% */
   a {
-    color: var(--color-azure-600, #448bff);
+    color: var(--color-azure-600, #448bff) !important;
     &:hover {
-      color: var(--color-azure-500, rgb(134, 169, 250));
+      color: var(--color-azure-500, rgb(134, 169, 250)) !important;
     }
   }
 }
@@ -303,5 +303,12 @@ body {
   }
   &.ant-btn-link {
     padding: 0;
+    color: var(--color-azure-600, #448bff) !important;
+    &:hover,
+    &:focus,
+    &:active {
+      text-decoration: underline;
+      color: var(--color-azure-500, rgb(134, 169, 250)) !important;
+    }
   }
 }

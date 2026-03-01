@@ -72,6 +72,11 @@ const Login = () => {
             </button>
           </div>
         </Form.Item>
+        <div className='flex justify-end'>
+          <Button type='link' onClick={() => navigate('/forgot-password')}>
+            Forgot Password?
+          </Button>
+        </div>
         <div className='form-footer'>
           <Form.Item shouldUpdate>
             {() => (
