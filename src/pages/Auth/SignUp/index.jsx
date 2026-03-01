@@ -1,4 +1,6 @@
 import ImgLogo from '@/assets/images/logo.png';
+import IconEyeOff from '@/assets/svgs/eye-off.svg?react';
+import IconEyeOn from '@/assets/svgs/eye.svg?react';
 import IconGoogle from '@/assets/svgs/google.svg?react';
 import useYup from "@/hooks/useYup";
 import terminalService from "@/services/terminal";
@@ -6,11 +8,13 @@ import { Button, Form, Input } from "antd";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-const Register = () => {
+const SignUp = () => {
   const navigate = useNavigate();
   const [form] = Form.useForm();
   const { yupSync } = useYup();
   const [isSubmiting, setIsSubmiting] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
   const onFinish = async (values) => {
     setIsSubmiting(true);
@@ -58,7 +62,23 @@ const Register = () => {
           <Input placeholder="Enter your email" autoComplete='email' size='large' />
         </Form.Item>
         <Form.Item label='Password' name='password' rules={[yupSync]}>
-          <Input.Password placeholder="Enter your password" autoComplete='password' size='large' />
+          <div className='password-input-wrapper'>
+            <Input
+              type={showPassword ? 'text' : 'password'}
+              placeholder="Enter your password"
+              autoComplete='password'
+              size='large'
+            />
+            <button
+              type='button'
+              className='password-toggle-absolute'
+              aria-label={showPassword ? 'Hide password' : 'Show password'}
+              onMouseDown={(event) => event.preventDefault()}
+              onClick={() => setShowPassword((prevState) => !prevState)}
+            >
+              {showPassword ? <IconEyeOn /> : <IconEyeOff />}
+            </button>
+          </div>
         </Form.Item>
         <Form.Item
           label='Confirm Password'
@@ -78,11 +98,23 @@ const Register = () => {
             },
           ]}
         >
-          <Input.Password
-            placeholder="Confirm your password"
-            autoComplete='confirmPassword'
-            size='large'
-          />
+          <div className='password-input-wrapper'>
+            <Input
+              type={showConfirmPassword ? 'text' : 'password'}
+              placeholder="Confirm your password"
+              autoComplete='confirmPassword'
+              size='large'
+            />
+            <button
+              type='button'
+              className='password-toggle-absolute'
+              aria-label={showConfirmPassword ? 'Hide confirm password' : 'Show confirm password'}
+              onMouseDown={(event) => event.preventDefault()}
+              onClick={() => setShowConfirmPassword((prevState) => !prevState)}
+            >
+              {showConfirmPassword ? <IconEyeOn /> : <IconEyeOff />}
+            </button>
+          </div>
         </Form.Item>
         <div className='text-link'>
           By clicking on the Sign Up button you are accepting our <a href="/terms-of-service" target="_blank" rel="noopener noreferrer">Terms of Service</a> and <a href="/privacy-policy" target="_blank" rel="noopener noreferrer">Privacy Policy</a>
@@ -107,4 +139,4 @@ const Register = () => {
   </div>;
 }
 
-export default Register;
+export default SignUp;
