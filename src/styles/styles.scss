@@ -1,7 +1,16 @@
 @use "variables" as *;
+@use "fonts";
+
+* {
+  font-family: "Inter", Arial, Helvetica, sans-serif;
+}
 
 body {
   margin: 0;
   font-family: var(--font-family-Font-1);
-  color: $color-azure-400;
+  background: 
+    url("../assets/svgs/background.svg") no-repeat center center fixed,
+    linear-gradient(180deg, #06090e 0%, #151f36 100%);
+  background-size: cover, cover;
+  min-height: 100vh;
 }
