@@ -96,7 +96,7 @@ const Register = () => {
             )}
           </Form.Item>
         </div>
-        <div className='text-link flex justify-center items-center'>
+        <div className='text-link flex justify-center items-center gap-2'>
           Already have an account?
           <Button type='link' onClick={() => navigate('/login')}>
             Log In Now
