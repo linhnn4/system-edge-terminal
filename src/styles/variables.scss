@@ -229,4 +229,15 @@ $color-azure-400: #60a5fa;
   --color-azure-6000: #{$color-azure-6000};
   --color-azure-600: #{$color-azure-600};
   --color-azure-400: #{$color-azure-400};
+
+  --radius-md: 8px;
+  --Colors-Border-border-primary: #373a41;
+  --Colors-Background-bg-primary: #0c0e12;
+  --Colors-Effects-Shadows-shadow-skeumorphic-inner-border: rgba(12, 14, 18, 0.18);
+  --Colors-Effects-Shadows-shadow-skeumorphic-inner: rgba(12, 14, 18, 0.05);
+  --Colors-Effects-Shadows-shadow-xs: rgba(255, 255, 255, 0);
+  --colors-text-text-secondary-700: #cecfd2;
+  --spacing-xl: 1rem;
+  --spacing-lg: 0.75rem;
+  --button-primary-bg: linear-gradient(90deg, #2761ea 0%, #4c48e6 100%);
 }

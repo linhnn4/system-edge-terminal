@@ -1,4 +1,5 @@
 import '@/styles/styles.scss';
+import '@/styles/tailwind.css';
 import {
   QueryClient,
   QueryClientProvider

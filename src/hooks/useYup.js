@@ -1,0 +1,39 @@
+import { useMemo } from 'react';
+import * as yup from 'yup';
+
+const useYup = () => {
+  const yupObj = useMemo(
+    () =>
+      yup
+        .object({
+          email: yup
+            .string()
+            .trim()
+            .required("Please enter your email address!")
+            .matches(
+              /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/,
+              "Please enter a valid email address!",
+            ),
+          username: yup
+            .string()
+            .trim()
+            .required("Please enter your username!"),
+          password: yup.string().trim().required("Please enter your password!"),
+          confirm_password: yup.string().trim().required("Please confirm your password!"),
+        })
+        .required(),
+    [],
+  );
+  const yupSync = useMemo(
+    () =>
+      /** @type {any} */({
+      async validator({ field }, value) {
+        await yupObj.validateAt(field, { [field]: value });
+      },
+    }),
+    [yupObj],
+  );
+  return { yupSync };
+};
+
+export default useYup;

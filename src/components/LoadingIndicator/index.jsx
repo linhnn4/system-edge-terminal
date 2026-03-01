@@ -1,6 +1,27 @@
-const LoadingIndicator = () => {
-  return (
-    <div style={{ textAlign: 'center', padding: '20px' }}>  Loading...</div>
-  );
-}
+import Lottie from 'lottie-react';
+import styled from 'styled-components';
+
+import loadingAnimation from './loading.json';
+
+const Wrapper = styled.div`
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+`;
+const LoadingIndicator = () => (
+  <Wrapper>
+    <Lottie
+      animationData={loadingAnimation}
+      loop={true}
+      style={{ width: 300, margin: 'auto', padding: '20px' }}
+    />
+  </Wrapper>
+);
+
 export default LoadingIndicator;
