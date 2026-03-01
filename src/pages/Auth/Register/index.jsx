@@ -57,10 +57,11 @@ const Register = () => {
         >
           <Input placeholder="Enter your email" autoComplete='email' size='large' />
         </Form.Item>
-        <Form.Item name='password' rules={[yupSync]}>
+        <Form.Item label='Password' name='password' rules={[yupSync]}>
           <Input.Password placeholder="Enter your password" autoComplete='password' size='large' />
         </Form.Item>
         <Form.Item
+          label='Confirm Password'
           name='confirm_password'
           rules={[
             {
@@ -83,6 +84,9 @@ const Register = () => {
             size='large'
           />
         </Form.Item>
+        <div className='text-link'>
+          By clicking on the Sign Up button you are accepting our <a href="/terms-of-service" target="_blank" rel="noopener noreferrer">Terms of Service</a> and <a href="/privacy-policy" target="_blank" rel="noopener noreferrer">Privacy Policy</a>
+        </div>
         <div className='form-footer'>
           <Form.Item shouldUpdate>
             {() => (
@@ -92,7 +96,7 @@ const Register = () => {
             )}
           </Form.Item>
         </div>
-        <div className='flex justify-center items-center'>
+        <div className='text-link flex justify-center items-center'>
           Already have an account?
           <Button type='link' onClick={() => navigate('/login')}>
             Log In Now

@@ -18,7 +18,14 @@ const useYup = () => {
             .string()
             .trim()
             .required("Please enter your username!"),
-          password: yup.string().trim().required("Please enter your password!"),
+          password: yup
+            .string()
+            .trim()
+            .required("Please enter your password!")
+            .matches(
+              /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{8,}$/,
+              "Your password must be at least 8 characters, including upper/lower case letters, numbers and symbols.",
+            ),
           confirm_password: yup.string().trim().required("Please confirm your password!"),
         })
         .required(),

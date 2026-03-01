@@ -3,6 +3,8 @@
 
 * {
   font-family: "Inter", sans-serif;
+  scrollbar-width: thin;
+  scrollbar-color: #2761ea #151f36;
 }
 
 body {
@@ -13,10 +15,16 @@ body {
     linear-gradient(180deg, #06090e 0%, #151f36 100%);
   background-size: cover, cover;
   min-height: 100vh;
+  overflow-x: hidden;
+  overflow-y: auto;
 }
 
 .auth-form-wrapper {
-  padding: 5rem 2rem;
+  padding: 2rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
   .auth-form {
     margin: 0 auto;
     display: flex;
@@ -146,7 +154,8 @@ body {
     .ant-form-item-control {
       .ant-form-item-control-input {
         .ant-form-item-control-input-content {
-          input {
+          input,
+          .ant-input-password {
             display: flex;
             height: 2.5rem;
             padding: 0.625rem 1rem;
@@ -187,6 +196,28 @@ body {
               }
             }
           }
+          .ant-input-password {
+            padding: 0 1rem;
+            input {
+              border: none;
+              background: transparent;
+              box-shadow: none;
+              padding: 0;
+              height: calc(2.5rem - 4px);
+              &:focus,
+              &:hover {
+                border: none;
+                background: transparent;
+                box-shadow: none;
+              }
+            }
+            .ant-input-suffix {
+              svg {
+                color: #94a3b8;
+                font-size: 1.25rem;
+              }
+            }
+          }
         }
       }
     }
@@ -201,6 +232,45 @@ body {
         font-weight: var(--font-weight-400, 400);
         line-height: 0.9375rem; /* 136.364% */
       }
+    }
+  }
+}
+
+.text-link {
+  color: #fff;
+
+  /* general/Regular */
+  font-family: var(--font-family-Font-1, Inter);
+  font-size: var(--font-size-14, 0.875rem);
+  font-style: normal;
+  font-weight: var(--font-weight-400, 400);
+  line-height: var(--line-height-20, 1.25rem); /* 142.857% */
+  a {
+    color: var(--color-azure-600, #448bff);
+    &:hover {
+      color: var(--color-azure-500, rgb(134, 169, 250));
+    }
+  }
+}
+
+.ant-btn {
+  border-radius: 0.5rem;
+  &.ant-btn-color-primary {
+    background: linear-gradient(90deg, #2761ea 0%, #4c48e6 100%);
+    color: var(--color-white-solid, #fff);
+    text-align: center;
+
+    /* general/Semibold */
+    font-family: var(--font-family-Font-1, Inter);
+    font-size: var(--font-size-14, 0.875rem);
+    font-style: normal;
+    font-weight: var(--font-weight-600, 600);
+    line-height: var(--line-height-20, 1.25rem); /* 142.857% */
+    &:hover,
+    &:focus,
+    &:active {
+      background: linear-gradient(90deg, #4a82f0 0%, #6e6aef 100%) !important;
+      color: var(--color-white-solid, #fff);
     }
   }
 }
