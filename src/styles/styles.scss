@@ -38,6 +38,9 @@ body {
     border: var(--stroke-weight-1, 1px) solid var(--color-grey-70050, rgba(51, 65, 85, 0.5));
     background: rgba(30, 41, 59, 0.5);
     box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+    &.verification {
+      gap: 2.5rem;
+    }
     .logo {
       text-align: center;
       img {
@@ -57,6 +60,39 @@ body {
         color: var(--color-grey-400, #94a3b8);
         text-align: center;
       }
+    }
+    .title {
+      width: 100%;
+      position: relative;
+      color: var(--color-white-solid, #fff);
+      text-align: center;
+
+      /* general/Bold */
+      font-family: var(--font-family-Font-1, Inter);
+      font-size: var(--font-size-24, 1.5rem);
+      font-style: normal;
+      font-weight: var(--font-weight-700, 700);
+      line-height: var(--line-height-32, 2rem); /* 133.333% */
+      letter-spacing: var(--letter-spacing--0_6, -0.0375rem);
+    }
+    .content {
+      color: var(--color-grey-400, #94a3b8);
+
+      /* general/Regular */
+      font-family: var(--font-family-Font-1, Inter);
+      font-size: var(--font-size-14, 0.875rem);
+      font-style: normal;
+      font-weight: var(--font-weight-400, 400);
+      line-height: var(--line-height-20, 1.25rem); /* 142.857% */
+      span {
+        color: white;
+      }
+    }
+    .actions {
+      display: flex;
+      flex-direction: column;
+      gap: 1.25rem;
+      width: 100%;
     }
   }
 }
@@ -294,11 +330,18 @@ body {
     font-style: normal;
     font-weight: var(--font-weight-600, 600);
     line-height: var(--line-height-20, 1.25rem); /* 142.857% */
-    &:hover,
-    &:focus,
-    &:active {
-      background: linear-gradient(90deg, #4a82f0 0%, #6e6aef 100%) !important;
-      color: var(--color-white-solid, #fff);
+    &:not(:disabled) {
+      &:hover,
+      &:focus,
+      &:active {
+        background: linear-gradient(90deg, #4a82f0 0%, #6e6aef 100%) !important;
+        color: var(--color-white-solid, #fff);
+      }
+    }
+    &:disabled {
+      opacity: 0.5;
+      cursor: default;
+      border: none;
     }
   }
   &.ant-btn-link {
@@ -311,4 +354,10 @@ body {
       color: var(--color-azure-500, rgb(134, 169, 250)) !important;
     }
   }
+}
+
+.back {
+  position: absolute;
+  left: 0;
+  cursor: pointer;
 }
