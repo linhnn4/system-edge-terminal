@@ -19,6 +19,7 @@ createRoot(document.getElementById('root')).render(
       theme={{
         token: {
           colorPrimary: '#2761EA',
+          colorTextPlaceholder: '#94a3b8',
         },
       }}
     >

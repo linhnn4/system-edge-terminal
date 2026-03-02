@@ -5,6 +5,7 @@ import Login from './pages/Auth/Login/Loadable';
 import SignUp from './pages/Auth/SignUp/Loadable';
 import Verification from './pages/Auth/Verification/Loadable';
 import VerificationForgot from './pages/Auth/VerificationForgot/Loadable';
+import CreateWorkspace from './pages/CreateWorkspace/Loadable';
 import Home from './pages/Home/Loadable';
 
 
@@ -14,6 +15,7 @@ function App() {
       <Routes>
         <Route element={<AuthGuard />}>
           <Route path="/" element={<Home />} />
+          <Route path="/create-workspace" element={<CreateWorkspace />} />
         </Route>
         <Route path='/login' element={<Login />} />
         <Route path='/signup' element={<SignUp />} />

@@ -27,6 +27,9 @@ const useYup = () => {
               "Your password must be at least 8 characters, including upper/lower case letters, numbers and symbols.",
             ),
           confirm_password: yup.string().trim().required("Please confirm your password!"),
+          workspaceName: yup.string().trim().required("Please enter your workspace name!"),
+          timezone: yup.string().trim().required("Please select your timezone!"),
+          region: yup.string().trim().required("Please select your region!"),
         })
         .required(),
     [],
