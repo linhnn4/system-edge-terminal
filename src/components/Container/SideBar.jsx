@@ -118,12 +118,14 @@ const Wrapper = styled.div`
         opacity 0.25s ease;
       max-height: 0;
       opacity: 0;
+      margin-left: 26px;
+      border-left: 1px solid var(--color-grey-500, #64748b);
       &.open {
         max-height: 31.25rem;
         opacity: 1;
       }
       .sidebar-item {
-        padding-left: 2.5rem;
+        margin-left: 0.5rem;
       }
     }
   }
@@ -180,11 +182,14 @@ const SideBar = () => {
                     ? "active"
                     : ""
               }`}
-              onClick={() =>
-                router.childrens
-                  ? toggleExpand(router.key)
-                  : navigate(router.path)
-              }
+              onClick={() => {
+                if (router.childrens) {
+                  toggleExpand(router.key);
+                } else {
+                  setExpandedKeys([]);
+                  navigate(router.path);
+                }
+              }}
             >
               <router.icon fontSize="1.25rem" />
               <span>{router.name}</span>
