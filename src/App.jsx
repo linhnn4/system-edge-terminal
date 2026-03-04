@@ -1,31 +1,50 @@
-import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
-import AuthGuard from './AuthGuard';
-import Forgot from './pages/Auth/Forgot/Loadable';
-import Login from './pages/Auth/Login/Loadable';
-import SignUp from './pages/Auth/SignUp/Loadable';
-import Verification from './pages/Auth/Verification/Loadable';
-import VerificationForgot from './pages/Auth/VerificationForgot/Loadable';
-import CreateWorkspace from './pages/CreateWorkspace/Loadable';
-import Home from './pages/Home/Loadable';
-
+import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
+import AuthGuard from "./AuthGuard";
+import Forgot from "./pages/Auth/Forgot/Loadable";
+import Login from "./pages/Auth/Login/Loadable";
+import SignUp from "./pages/Auth/SignUp/Loadable";
+import Verification from "./pages/Auth/Verification/Loadable";
+import VerificationForgot from "./pages/Auth/VerificationForgot/Loadable";
+import CreateWorkspace from "./pages/CreateWorkspace/Loadable";
+import Home from "./pages/Home/Loadable";
+import { ROUTERS } from "./utils/routers";
 
 function App() {
   return (
     <BrowserRouter>
       <Routes>
         <Route element={<AuthGuard />}>
-          <Route path="/" element={<Home />} />
-          <Route path="/create-workspace" element={<CreateWorkspace />} />
+          <Route path={ROUTERS.DASHBOARD} element={<Home />} />
+          <Route
+            path={ROUTERS.CREATE_WORKSPACE}
+            element={<CreateWorkspace />}
+          />
+          <Route path={ROUTERS.IMPORT_DATA} element={<Home />} />
+          <Route path={ROUTERS.TRADES} element={<Home />} />
+          <Route path={ROUTERS.SYSTEM} element={<Home />} />
+          <Route path={ROUTERS.BENCHMARKS} element={<Home />} />
+          <Route path={ROUTERS.COACH} element={<Home />} />
+          <Route path={ROUTERS.SETTINGS.BASE} element={<Home />} />
+          <Route path={ROUTERS.SETTINGS.PROFILE} element={<Home />} />
+          <Route path={ROUTERS.SETTINGS.WORKSPACE} element={<Home />} />
+          <Route path={ROUTERS.SETTINGS.AI_COACH} element={<Home />} />
+          <Route path={ROUTERS.SETTINGS.DATE_INTEGRATIONS} element={<Home />} />
+          <Route path={ROUTERS.SETTINGS.NOTIFICATION} element={<Home />} />
+          <Route path={ROUTERS.SETTINGS.SECURITY} element={<Home />} />
+          <Route path={ROUTERS.SETTINGS.BILLING} element={<Home />} />
         </Route>
-        <Route path='/login' element={<Login />} />
-        <Route path='/signup' element={<SignUp />} />
-        <Route path='/forgot-password' element={<Forgot />} />
-        <Route path='/verification' element={<Verification />} />
-        <Route path='/verification-forgot' element={<VerificationForgot />} />
-        <Route path='*' element={<Navigate to='/' replace />} />
+        <Route path={ROUTERS.LOGIN} element={<Login />} />
+        <Route path={ROUTERS.SIGNUP} element={<SignUp />} />
+        <Route path={ROUTERS.FORGOT_PASSWORD} element={<Forgot />} />
+        <Route path={ROUTERS.VERIFICATION} element={<Verification />} />
+        <Route
+          path={ROUTERS.VERIFICATION_FORGOT}
+          element={<VerificationForgot />}
+        />
+        <Route path="*" element={<Navigate to={ROUTERS.DASHBOARD} replace />} />
       </Routes>
     </BrowserRouter>
-  )
+  );
 }
 
-export default App
+export default App;

@@ -1,7 +1,7 @@
 import IconDown from "@/assets/svgs/chevron-down.svg?react";
 import ROUTERS_CONFIG from "@/utils/routers";
-import { useMemo } from "react";
-import { useLocation } from "react-router-dom";
+import { useMemo, useState } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 
 const Wrapper = styled.div`
@@ -95,6 +95,35 @@ const Wrapper = styled.div`
       &.active {
         background: var(--color-grey-70050, rgba(51, 65, 85, 0.5));
         color: var(--color-white-solid, #fff);
+        svg {
+          path {
+            stroke: var(--color-white-solid, #fff);
+          }
+        }
+      }
+      .sidebar-item-arrow {
+        margin-left: auto;
+        display: flex;
+        align-items: center;
+        transition: transform 0.2s ease;
+        &.expanded {
+          transform: rotate(180deg);
+        }
+      }
+    }
+    .sidebar-children {
+      overflow: hidden;
+      transition:
+        max-height 0.25s ease,
+        opacity 0.25s ease;
+      max-height: 0;
+      opacity: 0;
+      &.open {
+        max-height: 31.25rem;
+        opacity: 1;
+      }
+      .sidebar-item {
+        padding-left: 2.5rem;
       }
     }
   }
@@ -102,13 +131,33 @@ const Wrapper = styled.div`
 
 const SideBar = () => {
   const location = useLocation();
+  const navigate = useNavigate();
+  const [expandedKeys, setExpandedKeys] = useState([]);
 
   const activeKey = useMemo(() => {
-    const currentRouter = ROUTERS_CONFIG.find(
-      (router) => router.path === location.pathname,
-    );
-    return currentRouter ? currentRouter.key : null;
+    for (const router of ROUTERS_CONFIG) {
+      if (router.path === location.pathname) return router.key;
+      if (router.childrens) {
+        const child = router.childrens.find(
+          (c) => c.path === location.pathname,
+        );
+        if (child) return child.key;
+      }
+    }
+    return null;
   }, [location.pathname]);
+
+  const toggleExpand = (key) => {
+    setExpandedKeys((prev) =>
+      prev.includes(key) ? prev.filter((k) => k !== key) : [...prev, key],
+    );
+  };
+
+  const isParentActive = (router) => {
+    if (router.path === location.pathname) return true;
+    return router.childrens?.some((c) => c.path === location.pathname);
+  };
+
   return (
     <Wrapper>
       <div className="sidebar-header">
@@ -120,12 +169,53 @@ const SideBar = () => {
       </div>
       <div className="sidebar-content">
         {ROUTERS_CONFIG.map((router) => (
-          <div
-            key={router.key}
-            className={`sidebar-item ${activeKey === router.key ? "active" : ""}`}
-          >
-            <router.icon fontSize="1.25rem" />
-            <span>{router.name}</span>
+          <div key={router.key}>
+            <div
+              className={`sidebar-item ${
+                router.childrens
+                  ? isParentActive(router)
+                    ? "active"
+                    : ""
+                  : activeKey === router.key
+                    ? "active"
+                    : ""
+              }`}
+              onClick={() =>
+                router.childrens
+                  ? toggleExpand(router.key)
+                  : navigate(router.path)
+              }
+            >
+              <router.icon fontSize="1.25rem" />
+              <span>{router.name}</span>
+              {router.childrens && (
+                <span
+                  className={`sidebar-item-arrow ${
+                    expandedKeys.includes(router.key) ? "expanded" : ""
+                  }`}
+                >
+                  <IconDown fontSize="1rem" />
+                </span>
+              )}
+            </div>
+            {router.childrens && (
+              <div
+                className={`sidebar-children ${
+                  expandedKeys.includes(router.key) ? "open" : ""
+                }`}
+              >
+                {router.childrens.map((child) => (
+                  <div
+                    key={child.key}
+                    className={`sidebar-item ${activeKey === child.key ? "active" : ""}`}
+                    onClick={() => navigate(child.path)}
+                  >
+                    <child.icon fontSize="1.25rem" />
+                    <span>{child.name}</span>
+                  </div>
+                ))}
+              </div>
+            )}
           </div>
         ))}
       </div>
