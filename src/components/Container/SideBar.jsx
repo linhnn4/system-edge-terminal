@@ -2,6 +2,7 @@ import IconDown from "@/assets/svgs/chevron-down.svg?react";
 import IconCollapse from "@/assets/svgs/chevron-left-double.svg?react";
 import IconExpand from "@/assets/svgs/chevron-right-double.svg?react";
 import ROUTERS_CONFIG from "@/utils/routers";
+import { Tooltip } from "antd";
 import { useMemo, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import styled from "styled-components";
@@ -285,37 +286,43 @@ const SideBar = () => {
       <div className="sidebar-content">
         {ROUTERS_CONFIG.map((router) => (
           <div key={router.key}>
-            <div
-              className={`sidebar-item ${
-                router.childrens
-                  ? isParentActive(router)
-                    ? "active"
-                    : ""
-                  : activeKey === router.key
-                    ? "active"
-                    : ""
-              }`}
-              onClick={() => {
-                if (router.childrens) {
-                  toggleExpand(router.key);
-                } else {
-                  setExpandedKeys([]);
-                  navigate(router.path);
-                }
-              }}
+            <Tooltip
+              title={isCollapsed ? router.name : ""}
+              placement="right"
+              mouseEnterDelay={0.5}
             >
-              <router.icon fontSize="1.25rem" />
-              <span>{router.name}</span>
-              {router.childrens && (
-                <span
-                  className={`sidebar-item-arrow ${
-                    expandedKeys.includes(router.key) ? "expanded" : ""
-                  }`}
-                >
-                  <IconDown fontSize="1rem" />
-                </span>
-              )}
-            </div>
+              <div
+                className={`sidebar-item ${
+                  router.childrens
+                    ? isParentActive(router)
+                      ? "active"
+                      : ""
+                    : activeKey === router.key
+                      ? "active"
+                      : ""
+                }`}
+                onClick={() => {
+                  if (router.childrens) {
+                    toggleExpand(router.key);
+                  } else {
+                    setExpandedKeys([]);
+                    navigate(router.path);
+                  }
+                }}
+              >
+                <router.icon fontSize="1.25rem" />
+                <span>{router.name}</span>
+                {router.childrens && (
+                  <span
+                    className={`sidebar-item-arrow ${
+                      expandedKeys.includes(router.key) ? "expanded" : ""
+                    }`}
+                  >
+                    <IconDown fontSize="1rem" />
+                  </span>
+                )}
+              </div>
+            </Tooltip>
             {router.childrens && (
               <div
                 className={`sidebar-children ${
