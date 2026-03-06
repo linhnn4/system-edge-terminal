@@ -1,14 +1,13 @@
 import IconBack from "@/assets/svgs/arrow-narrow-left.svg?react";
 import useUser from "@/reducers/user";
 import { pad } from "@/utils";
-import { App, Button } from "antd";
-import { useEffect, useState } from "react";
+import { Button } from "antd";
+import { useState } from "react";
 import Countdown from "react-countdown";
 import { useNavigate } from "react-router-dom";
 import { useShallow } from "zustand/shallow";
 
 const Verification = () => {
-  const { notification } = App.useApp();
   const signupInfo = useUser(useShallow((state) => state.user.signupInfo));
   const navigate = useNavigate();
   const [isSubmiting, setIsSubmiting] = useState(true);
@@ -25,14 +24,6 @@ const Verification = () => {
       console.log(e);
     }
   };
-
-  useEffect(() => {
-    notification.info({
-      title: "Verification Email Sent",
-      description: `A verification email has been sent to ${signupInfo?.email}. Please check your inbox and click the verification link to activate your account.`,
-      duration: 50000,
-    });
-  }, [notification, signupInfo?.email]);
 
   return (
     <div className="auth-form-wrapper">

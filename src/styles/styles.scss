@@ -441,3 +441,53 @@ body {
 .grecaptcha-badge {
   display: none;
 }
+
+.ant-notification-notice-wrapper {
+  .ant-notification-notice {
+    .ant-notification-notice-close {
+      color: white;
+      font-size: 1.25rem;
+      top: 14px;
+    }
+    .ant-notification-notice-progress {
+      left: 0;
+      inline-size: 100%;
+    }
+    &.ant-notification-notice-info {
+      .ant-notification-notice-progress {
+        --ant-notification-progress-bg: linear-gradient(
+          90deg,
+          #93bbff,
+          #a5b4fc
+        );
+      }
+    }
+    &.ant-notification-notice-error {
+      .ant-notification-notice-progress {
+        --ant-notification-progress-bg: linear-gradient(
+          90deg,
+          #fca5a5,
+          #fecaca
+        );
+      }
+    }
+    &.ant-notification-notice-success {
+      .ant-notification-notice-progress {
+        --ant-notification-progress-bg: linear-gradient(
+          90deg,
+          #6ee7b7,
+          #a7f3d0
+        );
+      }
+    }
+    &.ant-notification-notice-warning {
+      .ant-notification-notice-progress {
+        --ant-notification-progress-bg: linear-gradient(
+          90deg,
+          #fde68a,
+          #fed7aa
+        );
+      }
+    }
+  }
+}
