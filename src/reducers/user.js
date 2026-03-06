@@ -1,9 +1,10 @@
-import { create } from 'zustand';
-import { persist } from 'zustand/middleware';
+import { create } from "zustand";
+import { persist } from "zustand/middleware";
 
 const initialState = {
   isLoggedIn: true,
   username: null,
+  signupInfo: null,
 };
 
 const useUser = create(
@@ -13,8 +14,7 @@ const useUser = create(
       login: async () => {
         try {
           set({
-            user: {
-            }
+            user: {},
           });
         } catch (error) {
           console.log({ error });
@@ -25,12 +25,15 @@ const useUser = create(
       },
       updateUser: async (data) => {
         set({ user: { ...get().user, ...data } });
-      }
+      },
+      updateSignupInfo: async (data) => {
+        set({ user: { ...get().user, signupInfo: data } });
+      },
     }),
     {
-      name: 'system-edge-user'
-    }
-  )
+      name: "system-edge-user",
+    },
+  ),
 );
 
 export default useUser;

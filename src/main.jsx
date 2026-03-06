@@ -1,31 +1,29 @@
-import '@/styles/styles.scss';
-import '@/styles/tailwind.css';
+import "@/styles/styles.scss";
+import "@/styles/tailwind.css";
 
-import {
-  QueryClient,
-  QueryClientProvider
-} from '@tanstack/react-query';
-import { ConfigProvider } from 'antd';
-import { StrictMode } from 'react';
-import { createRoot } from 'react-dom/client';
-import App from './App.jsx';
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { App as AntApp, ConfigProvider } from "antd";
+import { StrictMode } from "react";
+import { createRoot } from "react-dom/client";
+import App from "./App.jsx";
 
-const queryClient = new QueryClient()
+const queryClient = new QueryClient();
 
-
-createRoot(document.getElementById('root')).render(
+createRoot(document.getElementById("root")).render(
   <StrictMode>
     <ConfigProvider
       theme={{
         token: {
-          colorPrimary: '#2761EA',
-          colorTextPlaceholder: '#94a3b8',
+          colorPrimary: "#2761EA",
+          colorTextPlaceholder: "#94a3b8",
         },
       }}
     >
-      <QueryClientProvider client={queryClient}>
-        <App />
-      </QueryClientProvider>
+      <AntApp>
+        <QueryClientProvider client={queryClient}>
+          <App />
+        </QueryClientProvider>
+      </AntApp>
     </ConfigProvider>
   </StrictMode>,
-)
+);

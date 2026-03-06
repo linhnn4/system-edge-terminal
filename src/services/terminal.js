@@ -1,11 +1,9 @@
-import { client } from './axios';
+import { client } from "./axios";
 
-const login = (body) => client.post(`/authentication/token`, body);
-const fetchMe = () => client.get(`/user/info`);
+const signup = (body) => client.post(`/auth/signup`, body);
 
 const terminalService = {
-  login,
-  fetchMe,
+  signup,
 };
 
 export default terminalService;

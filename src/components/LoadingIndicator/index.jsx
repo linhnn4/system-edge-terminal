@@ -1,7 +1,7 @@
-import Lottie from 'lottie-react';
-import styled from 'styled-components';
+import Lottie from "lottie-react";
+import styled from "styled-components";
 
-import loadingAnimation from './loading.json';
+import loadingAnimation from "./loading.json";
 
 const Wrapper = styled.div`
   position: fixed;
@@ -13,13 +13,14 @@ const Wrapper = styled.div`
   align-items: center;
   justify-content: center;
   z-index: 9999;
+  background-color: #151f365e;
 `;
 const LoadingIndicator = () => (
   <Wrapper>
     <Lottie
       animationData={loadingAnimation}
       loop={true}
-      style={{ width: 300, margin: 'auto', padding: '20px' }}
+      style={{ width: 300, margin: "auto", padding: "20px" }}
     />
   </Wrapper>
 );

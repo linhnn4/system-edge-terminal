@@ -1,11 +1,11 @@
-import useUser from '@/reducers/user';
-import { notification } from 'antd';
-import axios from 'axios';
-import qs from 'qs';
+import useUser from "@/reducers/user";
+import { notification } from "antd";
+import axios from "axios";
+import qs from "qs";
 
-import { API_URL } from '@/utils/constants';
+import { API_URL } from "@/utils/constants";
 
-const DEFAULT_ERROR = 'Something went wrong. Please try again!';
+const DEFAULT_ERROR = "Something went wrong. Please try again!";
 
 const onError = ({ response }) => {
   if (response) {
@@ -13,25 +13,25 @@ const onError = ({ response }) => {
     const errorCode = status || code;
     if (errorCode === 401) {
       notification.error({
-        key: 'axios',
-        message: `${errorCode} - ${errorCodeText || data?.message || data?.errors?.[0]?.message || DEFAULT_ERROR}`
+        key: "axios",
+        message: `${errorCode} - ${errorCodeText || data?.message || data?.errors?.[0]?.message || DEFAULT_ERROR}`,
       });
       useUser.getState().logout();
     } else if (errorCode < 500) {
       notification.error({
-        key: 'axios',
-        message: data?.message || data?.errors?.[0]?.message || DEFAULT_ERROR
+        key: "axios",
+        message: data?.message || data?.errors?.[0]?.message || DEFAULT_ERROR,
       });
     } else {
       notification.error({
-        key: 'axios',
-        message: `${errorCode} - ${errorCodeText || data?.message || data?.errors?.message || DEFAULT_ERROR}`
+        key: "axios",
+        message: `${errorCode} - ${errorCodeText || data?.message || data?.errors?.message || DEFAULT_ERROR}`,
       });
     }
   } else {
     notification.error({
-      key: 'axios',
-      message: 'Cannot connect to Server'
+      key: "axios",
+      message: "Cannot connect to Server",
     });
   }
   return Promise.reject(response);
@@ -43,30 +43,21 @@ const beforeRequest = (config) => {
     Object.assign(config.headers, { Authorization: `Bearer ${accessToken}` });
   }
   if (config.data instanceof FormData) {
-    Object.assign(config.headers, { 'Content-Type': 'multipart/form-data' });
+    Object.assign(config.headers, { "Content-Type": "multipart/form-data" });
   }
   return config;
 };
 
 const client = axios.create({
   baseURL: API_URL,
-  paramsSerializer: (params) => qs.stringify(params, { arrayFormat: 'repeat' })
+  paramsSerializer: (params) => qs.stringify(params, { arrayFormat: "repeat" }),
 });
 client.interceptors.request.use(beforeRequest);
 
 [client].forEach((client) => {
-  client.interceptors.response.use(({ data: response, config }) => {
-    const { success } = response;
-    // @ts-ignore
-    if (success || config.isIgnoreError) return response?.data;
-    notification.error({
-      key: 'axios',
-      message: response?.errors?.message || DEFAULT_ERROR
-    });
-
-    return Promise.reject({});
+  client.interceptors.response.use(({ data: response }) => {
+    return response;
   }, onError);
 });
 
 export { client };
-
