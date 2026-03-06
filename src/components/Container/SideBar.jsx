@@ -2,7 +2,7 @@ import IconDown from "@/assets/svgs/chevron-down.svg?react";
 import IconCollapse from "@/assets/svgs/chevron-left-double.svg?react";
 import IconExpand from "@/assets/svgs/chevron-right-double.svg?react";
 import ROUTERS_CONFIG from "@/utils/routers";
-import { Tooltip } from "antd";
+import { Menu } from "antd";
 import { useMemo, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import styled from "styled-components";
@@ -20,11 +20,13 @@ const Wrapper = styled.div`
   border-radius: var(--radius-xl, 0.75rem);
   border: 1px solid var(--Colors-Border-border-secondary, #22262f);
   background: rgba(30, 41, 59, 0.5);
-  /* Shadows/shadow-xs */
   box-shadow: 0 1px 2px 0
     var(--Colors-Effects-Shadows-shadow-xs, rgba(255, 255, 255, 0));
+  transition: width 0.25s cubic-bezier(0.2, 0, 0, 1);
+  overflow: hidden;
+
   .sidebar-header {
-    padding: 0.5rem 0.75rem 0.5rem 0.75rem;
+    padding: 0.5rem 0.75rem;
     width: 100%;
     border-bottom: 1px solid #22262f;
     display: flex;
@@ -42,13 +44,11 @@ const Wrapper = styled.div`
       border-radius: 0.375rem;
       color: var(--color-white-solid, #fff);
       text-overflow: ellipsis;
-
-      /* general/Semibold */
       font-family: var(--font-family-Font-1, Inter);
       font-size: var(--font-size-14, 0.875rem);
       font-style: normal;
       font-weight: var(--font-weight-600, 600);
-      line-height: var(--line-height-20, 1.25rem); /* 142.857% */
+      line-height: var(--line-height-20, 1.25rem);
       transition: background 0.2s ease;
       &:hover {
         background: var(--color-grey-70050, rgba(51, 65, 85, 0.5));
@@ -59,7 +59,6 @@ const Wrapper = styled.div`
         align-items: center;
         gap: 0.5rem;
         .name {
-          align-items: center;
           overflow: hidden;
           text-overflow: ellipsis;
           white-space: nowrap;
@@ -75,6 +74,7 @@ const Wrapper = styled.div`
         align-items: center;
         aspect-ratio: 1/1;
         border-radius: 0.5rem;
+        flex-shrink: 0;
         background: linear-gradient(
           135deg,
           var(--color-azure-600, #448bff) 0%,
@@ -91,90 +91,97 @@ const Wrapper = styled.div`
         padding: var(--spacing-sm, 0.375rem);
         justify-content: center;
         align-items: center;
+        flex-shrink: 0;
         &:hover {
           border-radius: var(--radius-sm, 0.375rem);
           background: var(--color-grey-500, #64748b);
         }
       }
-      .expand-sidebar {
-        display: flex;
-        width: 2rem;
-        padding: var(--spacing-sm, 0.375rem);
-        justify-content: center;
-        align-items: center;
-        &:hover {
-          background: var(--color-grey-70050, rgba(51, 65, 85, 0.5));
-        }
-      }
     }
   }
+
   .sidebar-content {
     width: 100%;
     padding: 0.5rem 0.75rem;
-    .sidebar-item {
-      display: flex;
-      height: 2.5rem;
-      padding: var(--spacing-md, 0.5rem) var(--spacing-xl, 1rem);
-      align-items: center;
-      gap: 0.5rem;
-      align-self: stretch;
-      border-radius: var(--radius-sm, 0.375rem);
-      color: var(--general-Gull-Gray, var(--color-grey-400, #94a3b8));
-      text-align: center;
+    overflow-y: auto;
+    flex: 1;
 
-      /* general/Semibold */
+    /* Override antd Menu to match custom styles */
+    .ant-menu {
+      background: transparent;
+      border-inline-end: none !important;
       font-family: var(--font-family-Font-1, Inter);
       font-size: var(--font-size-14, 0.875rem);
-      font-style: normal;
       font-weight: var(--font-weight-600, 600);
-      line-height: var(--line-height-20, 1.25rem); /* 142.857% */
-      cursor: pointer;
+      line-height: var(--line-height-20, 1.25rem);
+      gap: 0.25rem;
+      display: flex;
+      flex-direction: column;
+    }
+    .ant-menu-item,
+    .ant-menu-submenu-title {
+      height: 2.5rem;
+      padding: var(--spacing-md, 0.5rem) var(--spacing-xl, 1rem) !important;
+      margin: 0 !important;
+      border-radius: var(--radius-sm, 0.375rem);
+      color: var(--color-grey-400, #94a3b8) !important;
       transition:
         background 0.2s ease,
         color 0.2s ease;
-      svg {
-        path {
-          stroke: var(--general-Gull-Gray, var(--color-grey-400, #94a3b8));
-        }
+      svg path {
+        stroke: var(--color-grey-400, #94a3b8);
+        transition: stroke 0.2s ease;
       }
       &:hover,
-      &.active {
-        background: var(--color-grey-70050, rgba(51, 65, 85, 0.5));
-        color: var(--color-white-solid, #fff);
-        svg {
-          path {
-            stroke: var(--color-white-solid, #fff);
-          }
-        }
-      }
-      .sidebar-item-arrow {
-        margin-left: auto;
-        display: flex;
-        align-items: center;
-        transition: transform 0.2s ease;
-        &.expanded {
-          transform: rotate(180deg);
+      &.ant-menu-item-selected,
+      &.ant-menu-submenu-selected > .ant-menu-submenu-title {
+        background: var(--color-grey-70050, rgba(51, 65, 85, 0.5)) !important;
+        color: var(--color-white-solid, #fff) !important;
+        svg path {
+          stroke: var(--color-white-solid, #fff);
         }
       }
     }
-    .sidebar-children {
-      overflow: hidden;
-      transition:
-        max-height 0.25s ease,
-        opacity 0.25s ease;
-      max-height: 0;
-      opacity: 0;
+    .ant-menu-item-selected {
+      background: var(--color-grey-70050, rgba(51, 65, 85, 0.5)) !important;
+      color: var(--color-white-solid, #fff) !important;
+      svg path {
+        stroke: var(--color-white-solid, #fff);
+      }
+    }
+    .ant-menu-submenu-selected > .ant-menu-submenu-title {
+      color: var(--color-white-solid, #fff) !important;
+      svg path {
+        stroke: var(--color-white-solid, #fff);
+      }
+    }
+    .ant-menu-sub {
+      background: transparent !important;
       margin-left: 26px;
       border-left: 1px solid var(--color-grey-500, #64748b);
-      &.open {
-        max-height: 31.25rem;
-        opacity: 1;
+      .ant-menu-item {
+        margin-left: 0.5rem !important;
       }
-      .sidebar-item {
-        margin-left: 0.5rem;
+    }
+    .ant-menu-submenu-arrow {
+      color: var(--color-grey-400, #94a3b8) !important;
+    }
+    .ant-menu-inline-collapsed {
+      width: auto;
+      .ant-menu-item,
+      .ant-menu-submenu-title {
+        justify-content: center;
+        padding: var(--spacing-md, 0.5rem) 0 !important;
+        .ant-menu-title-content {
+          display: none;
+        }
+      }
+      .ant-menu-submenu-arrow {
+        display: none;
       }
     }
   }
+
   &.collapsed {
     width: 4.25rem;
     .sidebar-header {
@@ -211,16 +218,32 @@ const Wrapper = styled.div`
         }
       }
     }
-    .sidebar-content {
-      .sidebar-item {
-        justify-content: center;
-        padding: 0;
-        span {
-          display: none;
+    .ant-menu {
+      .ant-menu-item,
+      .ant-menu-submenu-selected,
+      .ant-menu-submenu {
+        width: 2.5rem !important;
+        display: flex;
+        padding: 0 !important;
+        svg {
+          margin: 0.625rem;
+          font-size: 1.25rem;
+          width: 1.25rem;
+          height: 1.25rem;
+        }
+        .ant-menu-submenu-title {
+          width: 2.5rem;
+          display: flex;
+          padding: 0 !important;
+          svg {
+            margin: 0.625rem;
+            width: 1.25rem;
+            height: 1.25rem;
+          }
         }
       }
-      .sidebar-children {
-        display: none;
+      .ant-menu-submenu-selected {
+        background: var(--color-grey-70050, rgba(51, 65, 85, 0.5));
       }
     }
   }
@@ -229,7 +252,6 @@ const Wrapper = styled.div`
 const SideBar = () => {
   const location = useLocation();
   const navigate = useNavigate();
-  const [expandedKeys, setExpandedKeys] = useState([]);
   const [isCollapsed, setIsCollapsed] = useState(false);
 
   const activeKey = useMemo(() => {
@@ -245,17 +267,53 @@ const SideBar = () => {
     return null;
   }, [location.pathname]);
 
-  const toggleExpand = (key) => {
-    setExpandedKeys((prev) =>
-      prev.includes(key) ? prev.filter((k) => k !== key) : [...prev, key],
-    );
-  };
+  const defaultOpenKeys = (() => {
+    for (const router of ROUTERS_CONFIG) {
+      if (router.childrens?.some((c) => c.path === location.pathname)) {
+        return [router.key];
+      }
+    }
+    return [];
+  })();
 
-  const isParentActive = (router) => {
-    if (router.path === location.pathname) return true;
-    return (
-      isCollapsed && router.childrens?.some((c) => c.path === location.pathname)
-    );
+  const menuItems = useMemo(
+    () =>
+      ROUTERS_CONFIG.map((router) => {
+        const icon = <router.icon fontSize="1.25rem" />;
+        if (router.childrens) {
+          return {
+            key: router.key,
+            icon,
+            label: router.name,
+            children: router.childrens.map((child) => ({
+              key: child.key,
+              icon: <child.icon fontSize="1.25rem" />,
+              label: child.name,
+            })),
+          };
+        }
+        return { key: router.key, icon, label: router.name };
+      }),
+    [],
+  );
+
+  /** Build a key→path lookup from ROUTERS_CONFIG */
+  const pathMap = useMemo(() => {
+    const map = {};
+    for (const r of ROUTERS_CONFIG) {
+      map[r.key] = r.path;
+      if (r.childrens) {
+        for (const c of r.childrens) {
+          map[c.key] = c.path;
+        }
+      }
+    }
+    return map;
+  }, []);
+
+  const onMenuClick = ({ key }) => {
+    const path = pathMap[key];
+    if (path) navigate(path);
   };
 
   return (
@@ -283,65 +341,15 @@ const SideBar = () => {
         )}
       </div>
       <div className="sidebar-content">
-        {ROUTERS_CONFIG.map((router) => (
-          <div key={router.key}>
-            <Tooltip
-              title={isCollapsed ? router.name : ""}
-              placement="right"
-              mouseEnterDelay={0.5}
-            >
-              <div
-                className={`sidebar-item ${
-                  router.childrens
-                    ? isParentActive(router)
-                      ? "active"
-                      : ""
-                    : activeKey === router.key
-                      ? "active"
-                      : ""
-                }`}
-                onClick={() => {
-                  if (router.childrens) {
-                    toggleExpand(router.key);
-                  } else {
-                    setExpandedKeys([]);
-                    navigate(router.path);
-                  }
-                }}
-              >
-                <router.icon fontSize="1.25rem" />
-                <span>{router.name}</span>
-                {router.childrens && (
-                  <span
-                    className={`sidebar-item-arrow ${
-                      expandedKeys.includes(router.key) ? "expanded" : ""
-                    }`}
-                  >
-                    <IconDown fontSize="1rem" />
-                  </span>
-                )}
-              </div>
-            </Tooltip>
-            {router.childrens && (
-              <div
-                className={`sidebar-children ${
-                  expandedKeys.includes(router.key) ? "open" : ""
-                }`}
-              >
-                {router.childrens.map((child) => (
-                  <div
-                    key={child.key}
-                    className={`sidebar-item ${activeKey === child.key ? "active" : ""}`}
-                    onClick={() => navigate(child.path)}
-                  >
-                    <child.icon fontSize="1.25rem" />
-                    <span>{child.name}</span>
-                  </div>
-                ))}
-              </div>
-            )}
-          </div>
-        ))}
+        <Menu
+          mode="inline"
+          theme="dark"
+          selectedKeys={activeKey ? [activeKey] : []}
+          defaultOpenKeys={defaultOpenKeys}
+          inlineCollapsed={isCollapsed}
+          items={menuItems}
+          onClick={onMenuClick}
+        />
       </div>
     </Wrapper>
   );
