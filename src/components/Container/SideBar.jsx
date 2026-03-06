@@ -178,35 +178,36 @@ const Wrapper = styled.div`
   &.collapsed {
     width: 4.25rem;
     .sidebar-header {
+      padding: 0.5rem 0;
+      justify-content: center;
       .workspace {
         padding: 0;
         justify-content: center;
         position: relative;
+        width: 3.5rem;
         .name-wrapper {
           display: none;
         }
-        .expand-sidebar {
-          cursor: pointer;
-          position: absolute;
-          right: -2.25rem;
-          display: flex;
-          width: 1.5rem;
-          height: 2rem;
-          flex-direction: column;
-          justify-content: space-between;
-          align-items: center;
-          border-radius: 0 var(--radius-sm, 0.375rem) var(--radius-sm, 0.375rem)
-            0;
-          border-top: 1px solid var(--Colors-Border-border-secondary, #22262f);
-          border-right: 1px solid var(--Colors-Border-border-secondary, #22262f);
-          border-bottom: 1px solid
-            var(--Colors-Border-border-secondary, #22262f);
-          background: rgba(30, 41, 59, 0.5);
-          box-shadow: 0 1px 2px 0
-            var(--Colors-Effects-Shadows-shadow-xs, rgba(255, 255, 255, 0));
-        }
+      }
+      .expand-sidebar {
+        cursor: pointer;
+        position: absolute;
+        left: 4.65rem;
+        display: flex;
+        width: 1.5rem;
+        height: 2rem;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        border-radius: 0 var(--radius-sm, 0.375rem) var(--radius-sm, 0.375rem) 0;
+        border-top: 1px solid var(--Colors-Border-border-secondary, #22262f);
+        border-right: 1px solid var(--Colors-Border-border-secondary, #22262f);
+        border-bottom: 1px solid var(--Colors-Border-border-secondary, #22262f);
+        background: rgba(30, 41, 59, 0.5);
+        box-shadow: 0 1px 2px 0
+          var(--Colors-Effects-Shadows-shadow-xs, rgba(255, 255, 255, 0));
         &:hover {
-          background: transparent;
+          background: var(--color-grey-70050, rgba(51, 65, 85, 0.5));
         }
       }
     }
@@ -266,14 +267,7 @@ const SideBar = () => {
             <div className="name">Demo-001</div>
             <IconDown fontSize="1.25rem" />
           </div>
-          {isCollapsed ? (
-            <div
-              className="expand-sidebar"
-              onClick={() => setIsCollapsed(false)}
-            >
-              <IconExpand fontSize="1.25rem" />
-            </div>
-          ) : (
+          {!isCollapsed && (
             <div
               className="collapse-sidebar"
               onClick={() => setIsCollapsed(true)}
@@ -282,6 +276,11 @@ const SideBar = () => {
             </div>
           )}
         </div>
+        {isCollapsed && (
+          <div className="expand-sidebar" onClick={() => setIsCollapsed(false)}>
+            <IconExpand fontSize="1.25rem" />
+          </div>
+        )}
       </div>
       <div className="sidebar-content">
         {ROUTERS_CONFIG.map((router) => (
