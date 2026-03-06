@@ -2,6 +2,7 @@ import ImgLogo from "@/assets/images/logo.png";
 import IconEyeOff from "@/assets/svgs/eye-off.svg?react";
 import IconEyeOn from "@/assets/svgs/eye.svg?react";
 import IconGoogle from "@/assets/svgs/google.svg?react";
+import InputHiddenRemember from "@/components/InputHiddenRemember";
 import LoadingIndicator from "@/components/LoadingIndicator";
 import useRecaptchaV3 from "@/hooks/useRecaptchaV3";
 import useYup from "@/hooks/useYup";
@@ -84,26 +85,20 @@ const SignUp = () => {
           <span className="divider-text">Or</span>
         </div>
         <Form form={form} layout="vertical" onFinish={onFinish}>
+          <InputHiddenRemember name="username" />
+          <InputHiddenRemember name="email" />
+          <InputHiddenRemember name="password" type="password" />
           <Form.Item name="username" rules={[yupSync]} label="Username">
-            <Input
-              placeholder="Enter your username"
-              autoComplete="username"
-              size="large"
-            />
+            <Input placeholder="Enter your username" size="large" />
           </Form.Item>
           <Form.Item name="email" rules={[yupSync]} label="Email">
-            <Input
-              placeholder="Enter your email"
-              autoComplete="email"
-              size="large"
-            />
+            <Input placeholder="Enter your email" size="large" />
           </Form.Item>
           <Form.Item label="Password" name="password" rules={[yupSync]}>
             <div className="password-input-wrapper">
               <Input
                 type={showPassword ? "text" : "password"}
                 placeholder="Enter your password"
-                autoComplete="password"
                 size="large"
               />
               <button
@@ -139,7 +134,6 @@ const SignUp = () => {
               <Input
                 type={showConfirmPassword ? "text" : "password"}
                 placeholder="Confirm your password"
-                autoComplete="confirmPassword"
                 size="large"
               />
               <button

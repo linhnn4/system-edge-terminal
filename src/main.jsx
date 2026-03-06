@@ -6,6 +6,7 @@ import { App as AntApp, ConfigProvider } from "antd";
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import App from "./App.jsx";
+import NotificationProvider from "./components/NotificationProvider/index.jsx";
 import notificationConfig from "./configs/notificationConfig.js";
 import theme from "./configs/theme.js";
 
@@ -15,6 +16,7 @@ createRoot(document.getElementById("root")).render(
   <StrictMode>
     <ConfigProvider theme={theme}>
       <AntApp notification={notificationConfig}>
+        <NotificationProvider />
         <QueryClientProvider client={queryClient}>
           <App />
         </QueryClientProvider>

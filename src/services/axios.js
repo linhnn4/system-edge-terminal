@@ -1,5 +1,5 @@
 import useUser from "@/reducers/user";
-import { notification } from "antd";
+import notificationService from "@/services/notificationService";
 import axios from "axios";
 import qs from "qs";
 
@@ -12,26 +12,25 @@ const onError = ({ response }) => {
     const { code, data, errorCodeText, status } = response;
     const errorCode = status || code;
     if (errorCode === 401) {
-      notification.error({
-        key: "axios",
+      notificationService.error({
+        title: "Error",
         message: `${errorCode} - ${errorCodeText || data?.message || data?.errors?.[0]?.message || DEFAULT_ERROR}`,
       });
       useUser.getState().logout();
     } else if (errorCode < 500) {
-      notification.error({
-        key: "axios",
+      notificationService.error({
+        title: "Error",
         message: data?.message || data?.errors?.[0]?.message || DEFAULT_ERROR,
       });
     } else {
-      notification.error({
-        key: "axios",
+      notificationService.error({
+        title: "Error",
         message: `${errorCode} - ${errorCodeText || data?.message || data?.errors?.message || DEFAULT_ERROR}`,
       });
     }
   } else {
-    notification.error({
-      key: "axios",
-      message: "Cannot connect to Server",
+    notificationService.error({
+      title: "Cannot connect to Server",
     });
   }
   return Promise.reject(response);
