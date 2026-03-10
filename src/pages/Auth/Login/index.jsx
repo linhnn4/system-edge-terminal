@@ -2,6 +2,7 @@ import ImgLogo from "@/assets/images/logo.png";
 import IconEyeOff from "@/assets/svgs/eye-off.svg?react";
 import IconEyeOn from "@/assets/svgs/eye.svg?react";
 import IconGoogle from "@/assets/svgs/google.svg?react";
+import LoadingIndicator from "@/components/LoadingIndicator";
 import useYup from "@/hooks/useYup";
 import useUser from "@/reducers/user";
 import terminalService from "@/services/terminal";
@@ -121,6 +122,7 @@ const Login = () => {
           </div>
         </Form>
       </div>
+      {isSubmiting && <LoadingIndicator />}
     </div>
   );
 };
