@@ -3,7 +3,7 @@ import IconCollapse from "@/assets/svgs/chevron-left-double.svg?react";
 import IconExpand from "@/assets/svgs/chevron-right-double.svg?react";
 import ROUTERS_CONFIG from "@/utils/routers";
 import { Tooltip } from "antd";
-import { useMemo, useState } from "react";
+import { useMemo, useRef, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 
@@ -245,10 +245,12 @@ const Wrapper = styled.div`
         .name-wrapper {
           max-width: 0;
           opacity: 0;
+          display: none;
         }
         .collapse-sidebar {
           opacity: 0;
           pointer-events: none;
+          display: none;
         }
       }
       .expand-sidebar {
@@ -283,11 +285,85 @@ const Wrapper = styled.div`
   }
 `;
 
+const FlyoutMenu = styled.div`
+  position: fixed;
+  left: 4.65rem;
+  z-index: 1000;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  background: rgba(30, 41, 59, 0.97);
+  border: 1px solid var(--Colors-Border-border-secondary, #22262f);
+  border-radius: var(--radius-xl, 0.75rem);
+  padding: 0.5rem;
+  min-width: 13rem;
+  backdrop-filter: blur(8px);
+  box-shadow:
+    0 4px 6px -1px rgba(0, 0, 0, 0.4),
+    0 2px 4px -2px rgba(0, 0, 0, 0.3);
+  opacity: 0;
+  pointer-events: none;
+  transition:
+    opacity ${TRANSITION},
+    transform ${TRANSITION};
+  transform: translateX(-0.5rem);
+  &.visible {
+    opacity: 1;
+    pointer-events: auto;
+    transform: translateX(0);
+  }
+  .flyout-header {
+    padding: 0.375rem var(--spacing-xl, 1rem);
+    color: var(--color-grey-400, #94a3b8);
+    font-family: var(--font-family-Font-1, Inter);
+    font-size: var(--font-size-12, 0.75rem);
+    font-weight: var(--font-weight-600, 600);
+    line-height: 1.25rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+  .flyout-item {
+    display: flex;
+    height: 2.5rem;
+    padding: var(--spacing-md, 0.5rem) var(--spacing-xl, 1rem);
+    align-items: center;
+    gap: 0.5rem;
+    border-radius: var(--radius-sm, 0.375rem);
+    color: var(--general-Gull-Gray, var(--color-grey-400, #94a3b8));
+    font-family: var(--font-family-Font-1, Inter);
+    font-size: var(--font-size-14, 0.875rem);
+    font-weight: var(--font-weight-600, 600);
+    line-height: var(--line-height-20, 1.25rem);
+    cursor: pointer;
+    transition:
+      background 0.2s ease,
+      color 0.2s ease;
+    svg {
+      flex-shrink: 0;
+      path {
+        stroke: var(--general-Gull-Gray, var(--color-grey-400, #94a3b8));
+        transition: stroke 0.2s ease;
+      }
+    }
+    &:hover,
+    &.active {
+      background: var(--color-grey-70050, rgba(51, 65, 85, 0.5));
+      color: var(--color-white-solid, #fff);
+      svg path {
+        stroke: var(--color-white-solid, #fff);
+      }
+    }
+  }
+`;
+
 const SideBar = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const [expandedKeys, setExpandedKeys] = useState([]);
   const [isCollapsed, setIsCollapsed] = useState(false);
+  const [hoveredKey, setHoveredKey] = useState(null);
+  const [flyoutTop, setFlyoutTop] = useState(0);
+  const closeTimerRef = useRef(null);
 
   const activeKey = useMemo(() => {
     for (const router of ROUTERS_CONFIG) {
@@ -315,90 +391,148 @@ const SideBar = () => {
     );
   };
 
+  const handleItemMouseEnter = (key, e) => {
+    clearTimeout(closeTimerRef.current);
+    const rect = e.currentTarget.getBoundingClientRect();
+    setFlyoutTop(rect.top);
+    setHoveredKey(key);
+  };
+
+  const handleItemMouseLeave = () => {
+    closeTimerRef.current = setTimeout(() => setHoveredKey(null), 80);
+  };
+
+  const handleFlyoutMouseEnter = () => {
+    clearTimeout(closeTimerRef.current);
+  };
+
+  const handleFlyoutMouseLeave = () => {
+    setHoveredKey(null);
+  };
+
+  const hoveredRouter =
+    ROUTERS_CONFIG.find((r) => r.key === hoveredKey) ?? null;
+
   return (
-    <Wrapper className={isCollapsed ? "collapsed" : ""}>
-      <div className="sidebar-header">
-        <div className="workspace">
-          <div className="icon">D</div>
-          <div className="name-wrapper">
-            <div className="name">Demo-001</div>
-            <IconDown fontSize="1.25rem" />
-          </div>
-          {!isCollapsed && (
-            <div
-              className="collapse-sidebar"
-              onClick={() => setIsCollapsed(true)}
-            >
-              <IconCollapse fontSize="1.25rem" />
+    <>
+      <Wrapper className={isCollapsed ? "collapsed" : ""}>
+        <div className="sidebar-header">
+          <div className="workspace">
+            <div className="icon">D</div>
+            <div className="name-wrapper">
+              <div className="name">Demo-001</div>
+              <IconDown fontSize="1.25rem" />
             </div>
-          )}
-        </div>
-        <div className="expand-sidebar" onClick={() => setIsCollapsed(false)}>
-          <IconExpand fontSize="1.25rem" />
-        </div>
-      </div>
-      <div className="sidebar-content">
-        {ROUTERS_CONFIG.map((router) => (
-          <div key={router.key}>
-            <Tooltip
-              title={isCollapsed ? router.name : ""}
-              placement="right"
-              mouseEnterDelay={0.5}
-            >
+            {!isCollapsed && (
               <div
-                className={`sidebar-item ${
-                  router.childrens
-                    ? isParentActive(router)
-                      ? "active"
-                      : ""
-                    : activeKey === router.key
-                      ? "active"
-                      : ""
-                }`}
-                onClick={() => {
-                  if (router.childrens) {
-                    toggleExpand(router.key);
-                  } else {
-                    setExpandedKeys([]);
-                    navigate(router.path);
-                  }
-                }}
+                className="collapse-sidebar"
+                onClick={() => setIsCollapsed(true)}
               >
-                <router.icon fontSize="1.25rem" />
-                <span className="item-label">{router.name}</span>
-                {router.childrens && (
-                  <span
-                    className={`sidebar-item-arrow ${
-                      expandedKeys.includes(router.key) ? "expanded" : ""
-                    }`}
-                  >
-                    <IconDown fontSize="1rem" />
-                  </span>
-                )}
-              </div>
-            </Tooltip>
-            {router.childrens && (
-              <div
-                className={`sidebar-children ${
-                  expandedKeys.includes(router.key) ? "open" : ""
-                }`}
-              >
-                {router.childrens.map((child) => (
-                  <div
-                    key={child.key}
-                    className={`sidebar-item ${activeKey === child.key ? "active" : ""}`}
-                    onClick={() => navigate(child.path)}
-                  >
-                    <child.icon fontSize="1.25rem" />
-                    <span className="item-label">{child.name}</span>
-                  </div>
-                ))}
+                <IconCollapse fontSize="1.25rem" />
               </div>
             )}
           </div>
-        ))}
-      </div>
-    </Wrapper>
+          <div className="expand-sidebar" onClick={() => setIsCollapsed(false)}>
+            <IconExpand fontSize="1.25rem" />
+          </div>
+        </div>
+        <div className="sidebar-content">
+          {ROUTERS_CONFIG.map((router) => (
+            <div
+              key={router.key}
+              onMouseEnter={
+                router.childrens
+                  ? (e) => isCollapsed && handleItemMouseEnter(router.key, e)
+                  : undefined
+              }
+              onMouseLeave={
+                router.childrens
+                  ? () => isCollapsed && handleItemMouseLeave()
+                  : undefined
+              }
+            >
+              <Tooltip
+                title={isCollapsed && !router.childrens ? router.name : ""}
+                placement="right"
+                mouseEnterDelay={0.5}
+              >
+                <div
+                  className={`sidebar-item ${
+                    router.childrens
+                      ? isParentActive(router)
+                        ? "active"
+                        : ""
+                      : activeKey === router.key
+                        ? "active"
+                        : ""
+                  }`}
+                  onClick={() => {
+                    if (router.childrens) {
+                      toggleExpand(router.key);
+                    } else {
+                      setExpandedKeys([]);
+                      navigate(router.path);
+                    }
+                  }}
+                >
+                  <router.icon fontSize="1.25rem" />
+                  <span className="item-label">{router.name}</span>
+                  {router.childrens && (
+                    <span
+                      className={`sidebar-item-arrow ${
+                        expandedKeys.includes(router.key) ? "expanded" : ""
+                      }`}
+                    >
+                      <IconDown fontSize="1rem" />
+                    </span>
+                  )}
+                </div>
+              </Tooltip>
+              {router.childrens && (
+                <div
+                  className={`sidebar-children ${
+                    expandedKeys.includes(router.key) ? "open" : ""
+                  }`}
+                >
+                  {router.childrens.map((child) => (
+                    <div
+                      key={child.key}
+                      className={`sidebar-item ${activeKey === child.key ? "active" : ""}`}
+                      onClick={() => navigate(child.path)}
+                    >
+                      <child.icon fontSize="1.25rem" />
+                      <span className="item-label">{child.name}</span>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+          ))}
+        </div>
+      </Wrapper>
+      {isCollapsed && hoveredRouter?.childrens && (
+        <FlyoutMenu
+          className={hoveredKey ? "visible" : ""}
+          style={{ top: flyoutTop }}
+          onMouseEnter={handleFlyoutMouseEnter}
+          onMouseLeave={handleFlyoutMouseLeave}
+        >
+          {hoveredRouter.childrens.map((child) => (
+            <div
+              key={child.key}
+              className={`flyout-item ${activeKey === child.key ? "active" : ""}`}
+              onClick={() => {
+                setHoveredKey(null);
+                navigate(child.path);
+              }}
+            >
+              <child.icon fontSize="1.25rem" />
+              {child.name}
+            </div>
+          ))}
+        </FlyoutMenu>
+      )}
+    </>
   );
 };
 
