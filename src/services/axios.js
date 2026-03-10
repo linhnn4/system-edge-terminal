@@ -44,10 +44,13 @@ const beforeRequest = (config) => {
   return config;
 };
 
-const client = axios.create({
-  baseURL: API_URL,
-  paramsSerializer: (params) => qs.stringify(params, { arrayFormat: "repeat" }),
-});
+const client = /** @type {any} */ (
+  axios.create({
+    baseURL: API_URL,
+    paramsSerializer: (params) =>
+      qs.stringify(params, { arrayFormat: "repeat" }),
+  })
+);
 client.interceptors.request.use(beforeRequest);
 
 [client].forEach((client) => {
