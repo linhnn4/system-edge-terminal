@@ -111,6 +111,9 @@ const Wrapper = styled.div`
   .sidebar-content {
     width: 100%;
     padding: 0.5rem 0.75rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
     .sidebar-item {
       display: flex;
       height: 2.5rem;
@@ -169,9 +172,17 @@ const Wrapper = styled.div`
       &.open {
         max-height: 31.25rem;
         opacity: 1;
+        display: flex;
+        flex-direction: column;
+        gap: 0.25rem;
       }
       .sidebar-item {
         margin-left: 0.5rem;
+        svg {
+          font-size: 1.25rem;
+          width: 1.25rem;
+          height: 1.25rem;
+        }
       }
     }
   }
@@ -334,7 +345,7 @@ const SideBar = () => {
                     className={`sidebar-item ${activeKey === child.key ? "active" : ""}`}
                     onClick={() => navigate(child.path)}
                   >
-                    <child.icon fontSize="1.25rem" />
+                    <child.icon />
                     <span>{child.name}</span>
                   </div>
                 ))}
