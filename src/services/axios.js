@@ -9,23 +9,20 @@ const DEFAULT_ERROR = "Something went wrong. Please try again!";
 
 const onError = ({ response }) => {
   if (response) {
-    const { code, data, errorCodeText, status } = response;
+    const { code, status, data } = response;
     const errorCode = status || code;
     if (errorCode === 401) {
       notificationService.error({
-        title: "Error",
-        message: `${errorCode} - ${errorCodeText || data?.message || data?.errors?.[0]?.message || DEFAULT_ERROR}`,
+        title: `${errorCode} - ${data?.message || DEFAULT_ERROR}`,
       });
       useUser.getState().logout();
     } else if (errorCode < 500) {
       notificationService.error({
-        title: "Error",
-        message: data?.message || data?.errors?.[0]?.message || DEFAULT_ERROR,
+        title: `${errorCode} - ${data?.message || DEFAULT_ERROR}`,
       });
     } else {
       notificationService.error({
-        title: "Error",
-        message: `${errorCode} - ${errorCodeText || data?.message || data?.errors?.message || DEFAULT_ERROR}`,
+        title: `${errorCode} - ${data?.message || DEFAULT_ERROR}`,
       });
     }
   } else {

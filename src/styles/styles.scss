@@ -444,10 +444,35 @@ body {
 
 .ant-notification-notice-wrapper {
   .ant-notification-notice {
+    padding: 0.75rem 3rem 0.75rem 1rem !important;
+    width: max-content !important;
+    min-height: 3rem;
+    display: flex;
+    align-items: flex-start;
+    .ant-notification-notice-content {
+      .ant-notification-notice-title {
+        min-height: 1.5rem;
+        display: flex;
+        align-items: center;
+        color: var(--Modal-colorBgElevated, #fff);
+
+        /* general/Semibold */
+        font-family: var(--font-family-Font-1, Inter);
+        font-size: var(--font-size-14, 0.875rem);
+        font-style: normal;
+        font-weight: var(--font-weight-600, 600);
+        line-height: var(--line-height-20, 1.25rem); /* 142.857% */
+      }
+    }
     .ant-notification-notice-close {
       color: white;
       font-size: 1.25rem;
-      top: 14px;
+      top: 13px;
+      cursor: pointer;
+      &:hover {
+        transform: scale(1.2);
+        color: white;
+      }
     }
     .ant-notification-notice-progress {
       left: 0;

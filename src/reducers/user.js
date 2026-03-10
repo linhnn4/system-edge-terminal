@@ -2,9 +2,9 @@ import { create } from "zustand";
 import { persist } from "zustand/middleware";
 
 const initialState = {
-  isLoggedIn: true,
-  username: null,
+  isLoggedIn: false,
   signupInfo: null,
+  accessToken: null,
 };
 
 const useUser = create(

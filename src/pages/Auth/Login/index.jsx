@@ -2,11 +2,13 @@ import ImgLogo from "@/assets/images/logo.png";
 import IconEyeOff from "@/assets/svgs/eye-off.svg?react";
 import IconEyeOn from "@/assets/svgs/eye.svg?react";
 import IconGoogle from "@/assets/svgs/google.svg?react";
-import InputHiddenRemember from "@/components/InputHiddenRemember";
 import useYup from "@/hooks/useYup";
+import useUser from "@/reducers/user";
+import terminalService from "@/services/terminal";
 import { Button, Form, Input } from "antd";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useShallow } from "zustand/shallow";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -14,15 +16,22 @@ const Login = () => {
   const { yupSync } = useYup();
   const [isSubmiting, setIsSubmiting] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
+  const updateUser = useUser(useShallow((state) => state.updateUser));
 
   const onFinish = async (values) => {
-    console.log(values);
     setIsSubmiting(true);
     try {
-      // const result = await terminalService.login(values);
-      // if (result.code === 0) {
+      const result = await terminalService.login(values);
+      updateUser({
+        accessToken: result.access_token,
+      });
+      const resultMe = await terminalService.fetchMe();
+      updateUser({
+        ...result,
+        ...resultMe,
+        isLoggedIn: true,
+      });
       navigate("/");
-      // }
     } catch (e) {
       console.log(e);
     } finally {
@@ -53,7 +62,6 @@ const Login = () => {
         </div>
 
         <Form form={form} layout="vertical" onFinish={onFinish}>
-          <InputHiddenRemember name="username" />
           <Form.Item name="email" rules={[yupSync]} label="Email">
             <Input
               placeholder="Enter your email"
