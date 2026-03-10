@@ -7,11 +7,12 @@ import { useMemo, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 
+const TRANSITION = "0.25s cubic-bezier(0.2, 0, 0, 1)";
+
 const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
   width: 17.5rem;
-  max-width: 17.5rem;
   margin: var(--spacing-sm, 0.375rem) 0 var(--spacing-sm, 0.375rem)
     var(--spacing-sm, 0.375rem);
   align-items: flex-start;
@@ -20,16 +21,18 @@ const Wrapper = styled.div`
   border-radius: var(--radius-xl, 0.75rem);
   border: 1px solid var(--Colors-Border-border-secondary, #22262f);
   background: rgba(30, 41, 59, 0.5);
-  /* Shadows/shadow-xs */
   box-shadow: 0 1px 2px 0
     var(--Colors-Effects-Shadows-shadow-xs, rgba(255, 255, 255, 0));
+  overflow: hidden;
+  transition: width ${TRANSITION};
   .sidebar-header {
-    padding: 0.5rem 0.75rem 0.5rem 0.75rem;
+    padding: 0.5rem 0.75rem;
     width: 100%;
     border-bottom: 1px solid #22262f;
     display: flex;
     align-items: center;
     justify-content: space-between;
+    transition: padding ${TRANSITION};
     .workspace {
       width: 100%;
       cursor: pointer;
@@ -42,14 +45,14 @@ const Wrapper = styled.div`
       border-radius: 0.375rem;
       color: var(--color-white-solid, #fff);
       text-overflow: ellipsis;
-
-      /* general/Semibold */
       font-family: var(--font-family-Font-1, Inter);
       font-size: var(--font-size-14, 0.875rem);
       font-style: normal;
       font-weight: var(--font-weight-600, 600);
-      line-height: var(--line-height-20, 1.25rem); /* 142.857% */
-      transition: background 0.2s ease;
+      line-height: var(--line-height-20, 1.25rem);
+      transition:
+        background 0.2s ease,
+        padding ${TRANSITION};
       &:hover {
         background: var(--color-grey-70050, rgba(51, 65, 85, 0.5));
       }
@@ -58,6 +61,12 @@ const Wrapper = styled.div`
         display: flex;
         align-items: center;
         gap: 0.5rem;
+        overflow: hidden;
+        max-width: 100%;
+        opacity: 1;
+        transition:
+          max-width ${TRANSITION},
+          opacity ${TRANSITION};
         .name {
           align-items: center;
           overflow: hidden;
@@ -75,6 +84,7 @@ const Wrapper = styled.div`
         align-items: center;
         aspect-ratio: 1/1;
         border-radius: 0.5rem;
+        flex-shrink: 0;
         background: linear-gradient(
           135deg,
           var(--color-azure-600, #448bff) 0%,
@@ -91,20 +101,38 @@ const Wrapper = styled.div`
         padding: var(--spacing-sm, 0.375rem);
         justify-content: center;
         align-items: center;
+        flex-shrink: 0;
+        opacity: 1;
+        transition: opacity ${TRANSITION};
+        cursor: pointer;
         &:hover {
           border-radius: var(--radius-sm, 0.375rem);
           background: var(--color-grey-500, #64748b);
         }
       }
-      .expand-sidebar {
-        display: flex;
-        width: 2rem;
-        padding: var(--spacing-sm, 0.375rem);
-        justify-content: center;
-        align-items: center;
-        &:hover {
-          background: var(--color-grey-70050, rgba(51, 65, 85, 0.5));
-        }
+    }
+    .expand-sidebar {
+      position: absolute;
+      left: 4.65rem;
+      display: flex;
+      width: 1.5rem;
+      height: 2rem;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      border-radius: 0 var(--radius-sm, 0.375rem) var(--radius-sm, 0.375rem) 0;
+      border-top: 1px solid var(--Colors-Border-border-secondary, #22262f);
+      border-right: 1px solid var(--Colors-Border-border-secondary, #22262f);
+      border-bottom: 1px solid var(--Colors-Border-border-secondary, #22262f);
+      background: rgba(30, 41, 59, 0.5);
+      box-shadow: 0 1px 2px 0
+        var(--Colors-Effects-Shadows-shadow-xs, rgba(255, 255, 255, 0));
+      opacity: 0;
+      pointer-events: none;
+      cursor: pointer;
+      transition: opacity ${TRANSITION};
+      &:hover {
+        background: var(--color-grey-70050, rgba(51, 65, 85, 0.5));
       }
     }
   }
@@ -114,6 +142,7 @@ const Wrapper = styled.div`
     display: flex;
     flex-direction: column;
     gap: 0.25rem;
+    transition: padding ${TRANSITION};
     .sidebar-item {
       display: flex;
       height: 2.5rem;
@@ -123,22 +152,32 @@ const Wrapper = styled.div`
       align-self: stretch;
       border-radius: var(--radius-sm, 0.375rem);
       color: var(--general-Gull-Gray, var(--color-grey-400, #94a3b8));
-      text-align: center;
-
-      /* general/Semibold */
       font-family: var(--font-family-Font-1, Inter);
       font-size: var(--font-size-14, 0.875rem);
       font-style: normal;
       font-weight: var(--font-weight-600, 600);
-      line-height: var(--line-height-20, 1.25rem); /* 142.857% */
+      line-height: var(--line-height-20, 1.25rem);
       cursor: pointer;
       transition:
         background 0.2s ease,
-        color 0.2s ease;
+        color 0.2s ease,
+        padding ${TRANSITION},
+        justify-content ${TRANSITION};
       svg {
+        flex-shrink: 0;
         path {
           stroke: var(--general-Gull-Gray, var(--color-grey-400, #94a3b8));
+          transition: stroke 0.2s ease;
         }
+      }
+      span.item-label {
+        overflow: hidden;
+        white-space: nowrap;
+        max-width: 20rem;
+        opacity: 1;
+        transition:
+          max-width ${TRANSITION},
+          opacity ${TRANSITION};
       }
       &:hover,
       &.active {
@@ -154,7 +193,14 @@ const Wrapper = styled.div`
         margin-left: auto;
         display: flex;
         align-items: center;
-        transition: transform 0.2s ease;
+        flex-shrink: 0;
+        overflow: hidden;
+        max-width: 1.5rem;
+        opacity: 1;
+        transition:
+          transform 0.2s ease,
+          max-width ${TRANSITION},
+          opacity ${TRANSITION};
         &.expanded {
           transform: rotate(180deg);
         }
@@ -197,41 +243,41 @@ const Wrapper = styled.div`
         position: relative;
         width: 3.5rem;
         .name-wrapper {
-          display: none;
+          max-width: 0;
+          opacity: 0;
+        }
+        .collapse-sidebar {
+          opacity: 0;
+          pointer-events: none;
         }
       }
       .expand-sidebar {
-        cursor: pointer;
-        position: absolute;
-        left: 4.65rem;
-        display: flex;
-        width: 1.5rem;
-        height: 2rem;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        border-radius: 0 var(--radius-sm, 0.375rem) var(--radius-sm, 0.375rem) 0;
-        border-top: 1px solid var(--Colors-Border-border-secondary, #22262f);
-        border-right: 1px solid var(--Colors-Border-border-secondary, #22262f);
-        border-bottom: 1px solid var(--Colors-Border-border-secondary, #22262f);
-        background: rgba(30, 41, 59, 0.5);
-        box-shadow: 0 1px 2px 0
-          var(--Colors-Effects-Shadows-shadow-xs, rgba(255, 255, 255, 0));
-        &:hover {
-          background: var(--color-grey-70050, rgba(51, 65, 85, 0.5));
-        }
+        opacity: 1;
+        pointer-events: auto;
       }
     }
     .sidebar-content {
       .sidebar-item {
         justify-content: center;
         padding: 0;
-        span {
+        gap: 0;
+        span.item-label {
+          max-width: 0;
+          opacity: 0;
+          display: none;
+        }
+        .sidebar-item-arrow {
+          max-width: 0;
+          opacity: 0;
           display: none;
         }
       }
       .sidebar-children {
-        display: none;
+        max-height: 0 !important;
+        opacity: 0 !important;
+        pointer-events: none;
+        border: none;
+        margin: 0;
       }
     }
   }
@@ -287,11 +333,9 @@ const SideBar = () => {
             </div>
           )}
         </div>
-        {isCollapsed && (
-          <div className="expand-sidebar" onClick={() => setIsCollapsed(false)}>
-            <IconExpand fontSize="1.25rem" />
-          </div>
-        )}
+        <div className="expand-sidebar" onClick={() => setIsCollapsed(false)}>
+          <IconExpand fontSize="1.25rem" />
+        </div>
       </div>
       <div className="sidebar-content">
         {ROUTERS_CONFIG.map((router) => (
@@ -321,7 +365,7 @@ const SideBar = () => {
                 }}
               >
                 <router.icon fontSize="1.25rem" />
-                <span>{router.name}</span>
+                <span className="item-label">{router.name}</span>
                 {router.childrens && (
                   <span
                     className={`sidebar-item-arrow ${
@@ -345,8 +389,8 @@ const SideBar = () => {
                     className={`sidebar-item ${activeKey === child.key ? "active" : ""}`}
                     onClick={() => navigate(child.path)}
                   >
-                    <child.icon />
-                    <span>{child.name}</span>
+                    <child.icon fontSize="1.25rem" />
+                    <span className="item-label">{child.name}</span>
                   </div>
                 ))}
               </div>
