@@ -6,13 +6,14 @@ const refreshToken = (body) => client.post(`/auth/refresh`, body);
 const fetchMe = () => client.get(`/auth/me`);
 const requestEmailVerify = (body) =>
   client.post(`/auth/request-email-verify`, body);
-
+const verifyEmail = (params) => client.get(`/auth/verify-email`, { params });
 const terminalService = {
   signup,
   login,
   refreshToken,
   fetchMe,
   requestEmailVerify,
+  verifyEmail,
 };
 
 export default terminalService;

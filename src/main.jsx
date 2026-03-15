@@ -10,7 +10,14 @@ import NotificationProvider from "./components/NotificationProvider/index.jsx";
 import notificationConfig from "./configs/notificationConfig.js";
 import theme from "./configs/theme.js";
 
-const queryClient = new QueryClient();
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      retry: false,
+      refetchOnWindowFocus: false,
+    },
+  },
+});
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>

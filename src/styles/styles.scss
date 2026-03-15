@@ -89,6 +89,22 @@ body {
       line-height: var(--line-height-32, 2rem); /* 133.333% */
       letter-spacing: var(--letter-spacing--0_6, -0.0375rem);
     }
+    .sub-title {
+      color: var(--color-white-solid, #fff);
+      text-align: center;
+
+      /* general/Bold */
+      font-family: var(--font-family-Font-1, Inter);
+      font-size: var(--font-size-18, 1.125rem);
+      font-style: normal;
+      font-weight: var(--font-weight-700, 700);
+      line-height: var(--line-height-28, 1.75rem); /* 155.556% */
+    }
+    .icon-lottie {
+      width: 6.25rem;
+      height: 6.25rem;
+      margin: 0 auto;
+    }
     .content {
       color: var(--color-grey-400, #94a3b8);
 

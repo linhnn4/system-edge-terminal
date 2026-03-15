@@ -35,6 +35,7 @@ export const ROUTERS = {
   SIGNUP: "/signup",
   FORGOT_PASSWORD: "/forgot-password",
   VERIFICATION: "/verification",
+  VERIFICATION_CONFIRM: "/auth/verify-email",
   VERIFICATION_FORGOT: "/verification-forgot",
 };
 

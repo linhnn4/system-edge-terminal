@@ -5,6 +5,7 @@ import Forgot from "./pages/Auth/Forgot/Loadable";
 import Login from "./pages/Auth/Login/Loadable";
 import SignUp from "./pages/Auth/SignUp/Loadable";
 import Verification from "./pages/Auth/Verification/Loadable";
+import VerificationConfirm from "./pages/Auth/VerificationConfirm/Loadable";
 import VerificationForgot from "./pages/Auth/VerificationForgot/Loadable";
 import CreateWorkspace from "./pages/CreateWorkspace/Loadable";
 import Home from "./pages/Home/Loadable";
@@ -57,6 +58,10 @@ function App() {
         <Route path={ROUTERS.SIGNUP} element={<SignUp />} />
         <Route path={ROUTERS.FORGOT_PASSWORD} element={<Forgot />} />
         <Route path={ROUTERS.VERIFICATION} element={<Verification />} />
+        <Route
+          path={ROUTERS.VERIFICATION_CONFIRM}
+          element={<VerificationConfirm />}
+        />
         <Route
           path={ROUTERS.VERIFICATION_FORGOT}
           element={<VerificationForgot />}
