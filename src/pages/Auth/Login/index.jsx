@@ -6,6 +6,7 @@ import LoadingIndicator from "@/components/LoadingIndicator";
 import useYup from "@/hooks/useYup";
 import useUser from "@/reducers/user";
 import terminalService from "@/services/terminal";
+import { API_URL } from "@/utils/constants";
 import ERRORS from "@/utils/errors";
 import { Button, Form, Input } from "antd";
 import { useState } from "react";
@@ -24,6 +25,10 @@ const Login = () => {
       updateSignupInfo: state.updateSignupInfo,
     })),
   );
+
+  const loginWithGoogle = () => {
+    window.location.href = `${API_URL}/auth/google/login`;
+  };
 
   const onFinish = async (values) => {
     setIsSubmiting(true);
@@ -65,7 +70,12 @@ const Login = () => {
             Manage Your Trading Faster!
           </div>
         </div>
-        <Button size="large" block className="google-btn text-md-regular">
+        <Button
+          size="large"
+          block
+          className="google-btn text-md-regular"
+          onClick={loginWithGoogle}
+        >
           <IconGoogle fontSize="1.5rem" />
           Sign In with Google
         </Button>

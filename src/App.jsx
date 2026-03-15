@@ -2,6 +2,7 @@ import { useEffect } from "react";
 import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 import AuthGuard from "./AuthGuard";
 import Forgot from "./pages/Auth/Forgot/Loadable";
+import GoogleCallback from "./pages/Auth/GoogleCallback/Loadable";
 import Login from "./pages/Auth/Login/Loadable";
 import SignUp from "./pages/Auth/SignUp/Loadable";
 import Verification from "./pages/Auth/Verification/Loadable";
@@ -66,6 +67,7 @@ function App() {
           path={ROUTERS.VERIFICATION_FORGOT}
           element={<VerificationForgot />}
         />
+        <Route path={ROUTERS.GOOGLE_CALLBACK} element={<GoogleCallback />} />
         <Route path="*" element={<Navigate to={ROUTERS.DASHBOARD} replace />} />
       </Routes>
     </BrowserRouter>

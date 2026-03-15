@@ -37,6 +37,7 @@ export const ROUTERS = {
   VERIFICATION: "/verification",
   VERIFICATION_CONFIRM: "/auth/verify-email",
   VERIFICATION_FORGOT: "/verification-forgot",
+  GOOGLE_CALLBACK: "/auth/google/callback",
 };
 
 const ROUTERS_CONFIG = [
