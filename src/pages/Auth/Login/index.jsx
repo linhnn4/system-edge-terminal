@@ -9,7 +9,7 @@ import terminalService from "@/services/terminal";
 import { API_URL } from "@/utils/constants";
 import ERRORS from "@/utils/errors";
 import { Button, Form, Input } from "antd";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useShallow } from "zustand/shallow";
 
@@ -19,10 +19,11 @@ const Login = () => {
   const { yupSync } = useYup();
   const [isSubmiting, setIsSubmiting] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
-  const { updateUser, updateSignupInfo } = useUser(
+  const { updateUser, updateSignupInfo, logout } = useUser(
     useShallow((state) => ({
       updateUser: state.updateUser,
       updateSignupInfo: state.updateSignupInfo,
+      logout: state.logout,
     })),
   );
 
@@ -55,6 +56,11 @@ const Login = () => {
       setIsSubmiting(false);
     }
   };
+
+  useEffect(() => {
+    logout();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <div className="auth-form-wrapper">

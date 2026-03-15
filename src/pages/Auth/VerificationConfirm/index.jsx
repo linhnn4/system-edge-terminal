@@ -23,7 +23,8 @@ const VerificationConfirm = () => {
 
   const { isLoading, isError } = useQuery({
     queryKey: ["verifyEmail", { token, email }],
-    queryFn: () => terminalService.verifyEmail({ token }),
+    queryFn: () =>
+      terminalService.verifyEmail({ token }, { ignoreError: true }),
     enabled: !!token && !!email,
   });
 

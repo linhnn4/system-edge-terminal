@@ -39,29 +39,35 @@ const refreshAuthToken = async () => {
   return null;
 };
 
-const onError = ({ response }) => {
-  if (response) {
-    const { code, status, data } = response;
-    const errorCode = status || code;
-    if (errorCode === 401) {
-      notificationService.error({
-        title: `${errorCode} - ${data?.message || DEFAULT_ERROR}`,
-      });
-      useUser.getState().logout();
-    } else if (errorCode < 500) {
-      notificationService.error({
-        title: `${errorCode} - ${data?.message || DEFAULT_ERROR}`,
-      });
+const onError = (error) => {
+  const { response, config } = error || {};
+  const ignore = config?.ignoreError === true;
+
+  if (!ignore) {
+    if (response) {
+      const { code, status, data } = response;
+      const errorCode = status || code;
+      if (errorCode === 401) {
+        notificationService.error({
+          title: `${errorCode} - ${data?.message || DEFAULT_ERROR}`,
+        });
+        useUser.getState().logout();
+      } else if (errorCode < 500) {
+        notificationService.error({
+          title: `${errorCode} - ${data?.message || DEFAULT_ERROR}`,
+        });
+      } else {
+        notificationService.error({
+          title: `${errorCode} - ${data?.message || DEFAULT_ERROR}`,
+        });
+      }
     } else {
       notificationService.error({
-        title: `${errorCode} - ${data?.message || DEFAULT_ERROR}`,
+        title: "Cannot connect to Server",
       });
     }
-  } else {
-    notificationService.error({
-      title: "Cannot connect to Server",
-    });
   }
+
   return Promise.reject(response);
 };
 
