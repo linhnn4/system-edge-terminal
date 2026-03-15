@@ -6,6 +6,7 @@ import LoadingIndicator from "@/components/LoadingIndicator";
 import useYup from "@/hooks/useYup";
 import useUser from "@/reducers/user";
 import terminalService from "@/services/terminal";
+import ERRORS from "@/utils/errors";
 import { Button, Form, Input } from "antd";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
@@ -17,7 +18,12 @@ const Login = () => {
   const { yupSync } = useYup();
   const [isSubmiting, setIsSubmiting] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
-  const updateUser = useUser(useShallow((state) => state.updateUser));
+  const { updateUser, updateSignupInfo } = useUser(
+    useShallow((state) => ({
+      updateUser: state.updateUser,
+      updateSignupInfo: state.updateSignupInfo,
+    })),
+  );
 
   const onFinish = async (values) => {
     setIsSubmiting(true);
@@ -25,6 +31,7 @@ const Login = () => {
       const result = await terminalService.login(values);
       updateUser({
         accessToken: result.access_token,
+        refreshToken: result.refresh_token,
       });
       const resultMe = await terminalService.fetchMe();
       updateUser({
@@ -34,7 +41,11 @@ const Login = () => {
       });
       navigate("/");
     } catch (e) {
-      console.log(e);
+      // handle error not verified
+      if (e?.data?.message === ERRORS.NOT_VERIFIED) {
+        updateSignupInfo({ values, isSend: false });
+        navigate("/verification");
+      }
     } finally {
       setIsSubmiting(false);
     }

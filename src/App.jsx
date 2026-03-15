@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 import AuthGuard from "./AuthGuard";
 import Forgot from "./pages/Auth/Forgot/Loadable";
@@ -7,9 +8,28 @@ import Verification from "./pages/Auth/Verification/Loadable";
 import VerificationForgot from "./pages/Auth/VerificationForgot/Loadable";
 import CreateWorkspace from "./pages/CreateWorkspace/Loadable";
 import Home from "./pages/Home/Loadable";
+import useUser from "./reducers/user";
+import terminalService from "./services/terminal";
 import { ROUTERS } from "./utils/routers";
 
 function App() {
+  const accessToken = useUser((state) => state.user.accessToken);
+  const updateUser = useUser((state) => state.updateUser);
+  const logout = useUser((state) => state.logout);
+
+  useEffect(() => {
+    if (!accessToken) return;
+    terminalService
+      .fetchMe()
+      .then((data) => {
+        updateUser(data);
+      })
+      .catch(() => {
+        logout();
+      });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   return (
     <BrowserRouter>
       <Routes>

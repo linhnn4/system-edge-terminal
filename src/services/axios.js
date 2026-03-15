@@ -4,8 +4,40 @@ import axios from "axios";
 import qs from "qs";
 
 import { API_URL } from "@/utils/constants";
+import terminalService from "./terminal";
 
 const DEFAULT_ERROR = "Something went wrong. Please try again!";
+
+let isRefreshing = false;
+let subscribers = [];
+
+const subscribeTokenRefresh = (callback) => {
+  subscribers.push(callback);
+};
+
+const onTokenRefreshed = (token) => {
+  subscribers.forEach((callback) => callback(token));
+  subscribers = [];
+};
+
+const refreshAuthToken = async () => {
+  try {
+    const { refreshToken } = useUser.getState().user;
+    if (refreshToken) {
+      const result = await terminalService.refreshToken({
+        refresh_token: refreshToken,
+      });
+      useUser.getState().updateUser({
+        accessToken: result.access_token,
+        refreshToken: result.refresh_token,
+      });
+      return result.access_token;
+    }
+  } catch (error) {
+    console.log({ error });
+  }
+  return null;
+};
 
 const onError = ({ response }) => {
   if (response) {
@@ -51,12 +83,60 @@ const client = /** @type {any} */ (
       qs.stringify(params, { arrayFormat: "repeat" }),
   })
 );
+
 client.interceptors.request.use(beforeRequest);
 
-[client].forEach((client) => {
-  client.interceptors.response.use(({ data: response }) => {
-    return response;
-  }, onError);
-});
+client.interceptors.response.use(
+  ({ data: response }) => response,
+  async (error) => {
+    const originalRequest = error.config;
+    const isRefreshEndpoint = originalRequest.url?.includes("/auth/refresh");
+
+    if (
+      (error.response?.status === 401 || error.response?.status === 403) &&
+      !originalRequest._retry &&
+      !isRefreshEndpoint
+    ) {
+      if (isRefreshing) {
+        return new Promise((resolve) => {
+          subscribeTokenRefresh((token) => {
+            originalRequest.headers.Authorization = `Bearer ${token}`;
+            resolve(client(originalRequest));
+          });
+        });
+      }
+
+      originalRequest._retry = true;
+      isRefreshing = true;
+
+      try {
+        const newToken = await refreshAuthToken();
+
+        if (newToken) {
+          isRefreshing = false;
+          onTokenRefreshed(newToken);
+          originalRequest.headers.Authorization = `Bearer ${newToken}`;
+          return client(originalRequest);
+        } else {
+          isRefreshing = false;
+          subscribers = [];
+          useUser.getState().logout();
+          return onError(error);
+        }
+      } catch (refreshError) {
+        isRefreshing = false;
+        subscribers = [];
+        useUser.getState().logout();
+        return onError(refreshError);
+      }
+    }
+
+    if (!isRefreshEndpoint) {
+      return onError(error);
+    }
+
+    return Promise.reject(error);
+  },
+);
 
 export { client };

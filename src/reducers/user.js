@@ -5,21 +5,13 @@ const initialState = {
   isLoggedIn: false,
   signupInfo: null,
   accessToken: null,
+  refreshToken: null,
 };
 
 const useUser = create(
   persist(
     (set, get) => ({
       user: initialState,
-      login: async () => {
-        try {
-          set({
-            user: {},
-          });
-        } catch (error) {
-          console.log({ error });
-        }
-      },
       logout: async () => {
         set({ user: initialState });
       },

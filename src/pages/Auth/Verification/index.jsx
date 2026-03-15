@@ -1,8 +1,11 @@
 import IconBack from "@/assets/svgs/arrow-narrow-left.svg?react";
+import LoadingIndicator from "@/components/LoadingIndicator";
 import useUser from "@/reducers/user";
+import terminalService from "@/services/terminal";
 import { pad } from "@/utils";
+import { CONFIG_RESET_TIME } from "@/utils/constants";
 import { Button } from "antd";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Countdown from "react-countdown";
 import { useNavigate } from "react-router-dom";
 import { useShallow } from "zustand/shallow";
@@ -10,20 +13,26 @@ import { useShallow } from "zustand/shallow";
 const Verification = () => {
   const signupInfo = useUser(useShallow((state) => state.user.signupInfo));
   const navigate = useNavigate();
-  const [isSubmiting, setIsSubmiting] = useState(true);
-  const [isResend, setIsResend] = useState(true);
+  const [isSubmiting, setIsSubmiting] = useState(false);
+  const [isResend, setIsResend] = useState(signupInfo?.isSend || false);
 
   const onResend = async () => {
     setIsSubmiting(true);
     try {
-      // const result = await terminalService.resend();
-      // if (result?.data?.otp_ttl) {
+      await terminalService.requestEmailVerify({ email: signupInfo?.email });
       setIsResend(true);
-      // }
     } catch (e) {
       console.log(e);
+    } finally {
+      setIsSubmiting(false);
     }
   };
+
+  useEffect(() => {
+    if (!signupInfo) {
+      navigate("/signup");
+    }
+  }, [navigate, signupInfo]);
 
   return (
     <div className="auth-form-wrapper">
@@ -46,15 +55,14 @@ const Verification = () => {
             type="primary"
             block
             size="large"
-            disabled={isSubmiting}
+            disabled={isSubmiting || isResend}
             onClick={onResend}
           >
             {isResend ? (
               <>
                 Resend Verification Email after{" "}
                 <Countdown
-                  // eslint-disable-next-line react-hooks/purity
-                  date={Date.now() + 90000}
+                  date={Date.now() + CONFIG_RESET_TIME}
                   renderer={({ seconds, minutes }) =>
                     `${pad(minutes)}:${pad(seconds)}`
                   }
@@ -76,6 +84,7 @@ const Verification = () => {
           </div>
         </div>
       </div>
+      {isSubmiting && <LoadingIndicator />}
     </div>
   );
 };

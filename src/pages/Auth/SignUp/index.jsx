@@ -39,7 +39,7 @@ const SignUp = () => {
       }
       const signupInfo = { ...values, recaptcha_token: token };
       await terminalService.signup(signupInfo);
-      updateSignupInfo(signupInfo);
+      updateSignupInfo({ values: signupInfo, isSend: true });
 
       navigate("/verification");
     } catch (e) {
