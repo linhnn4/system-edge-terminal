@@ -42,7 +42,7 @@ body {
     }
     &.create-workspace {
       gap: 2rem;
-      max-width: 48rem;
+      max-width: 30rem;
       width: 100%;
     }
     .logo {
@@ -185,6 +185,35 @@ body {
   font-style: normal;
   font-weight: 600;
   line-height: var(--Line-height-text-md, 1.5rem); /* 150% */
+}
+
+.text-desc {
+  color: var(--color-grey-400, #94a3b8);
+
+  /* general/Semibold */
+  font-family: var(--font-family-Font-1, Inter);
+  font-size: var(--font-size-14, 0.875rem);
+  font-style: normal;
+  font-weight: var(--font-weight-600, 600);
+  line-height: var(--line-height-20, 1.25rem); /* 142.857% */
+}
+
+.text-link {
+  cursor: pointer;
+  color: var(--color-white-solid, #fff);
+
+  /* general/Semibold */
+  font-family: var(--font-family-Font-1, Inter);
+  font-size: var(--font-size-14, 0.875rem);
+  font-style: normal;
+  font-weight: var(--font-weight-600, 600);
+  line-height: var(--line-height-20, 1.25rem); /* 142.857% */
+  text-decoration-line: underline;
+  text-decoration-style: solid;
+  text-decoration-skip-ink: auto;
+  text-decoration-thickness: auto;
+  text-underline-offset: auto;
+  text-underline-position: from-font;
 }
 
 .divider {
@@ -337,6 +366,11 @@ body {
             }
           }
         }
+        .ant-select-content {
+          height: 2.5rem;
+          display: flex;
+          align-items: center;
+        }
       }
     }
     .ant-form-item-additional {
@@ -351,6 +385,12 @@ body {
         line-height: 0.9375rem; /* 136.364% */
       }
     }
+  }
+}
+
+.ant-select-item-empty {
+  .ant-empty-description {
+    color: white;
   }
 }
 

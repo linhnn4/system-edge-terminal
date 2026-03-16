@@ -7,68 +7,97 @@ export const pad = (n, width = 2, z) => {
 };
 
 const TIMEZONE_TO_REGION = {
-  "America/New_York": "us-east-1",
-  "America/Chicago": "us-east-2",
-  "America/Denver": "us-west-2",
-  "America/Los_Angeles": "us-west-2",
-  "America/Anchorage": "us-west-2",
-  "Pacific/Honolulu": "us-west-2",
-  "America/Halifax": "us-east-1",
-  "America/Argentina/Buenos_Aires": "us-east-1",
-  "Europe/London": "eu-west-2",
-  "Europe/Berlin": "eu-central-1",
-  "Europe/Athens": "eu-central-1",
-  "Europe/Moscow": "eu-central-1",
-  "Asia/Dubai": "ap-southeast-1",
-  "Asia/Karachi": "ap-southeast-1",
-  "Asia/Kolkata": "ap-southeast-1",
-  "Asia/Dhaka": "ap-southeast-1",
-  "Asia/Bangkok": "ap-southeast-1",
-  "Asia/Singapore": "ap-southeast-1",
-  "Asia/Tokyo": "ap-northeast-1",
-  "Australia/Sydney": "ap-southeast-2",
-  "Pacific/Auckland": "ap-southeast-2",
+  UTC: "none",
+  // Americas
+  "America/New_York": "us-east",
+  "America/Chicago": "us-east",
+  "America/Denver": "us-west",
+  "America/Los_Angeles": "us-west",
+  "America/Phoenix": "us-west",
+  "America/Anchorage": "us-west",
+  "America/Honolulu": "us-west",
+  "America/Toronto": "us-east",
+  "America/Vancouver": "us-west",
+  "America/Mexico_City": "us-east",
+  "America/Bogota": "us-east",
+  "America/Lima": "us-east",
+  "America/Santiago": "us-east",
+  "America/Sao_Paulo": "us-east",
+  "America/Argentina/Buenos_Aires": "us-east",
+  "America/Halifax": "us-east",
+  // Europe
+  "Europe/London": "eu-west",
+  "Europe/Dublin": "eu-west",
+  "Europe/Lisbon": "eu-west",
+  "Europe/Paris": "eu-west",
+  "Europe/Berlin": "eu-central",
+  "Europe/Rome": "eu-central",
+  "Europe/Madrid": "eu-west",
+  "Europe/Amsterdam": "eu-west",
+  "Europe/Brussels": "eu-west",
+  "Europe/Zurich": "eu-central",
+  "Europe/Stockholm": "eu-central",
+  "Europe/Vienna": "eu-central",
+  "Europe/Warsaw": "eu-central",
+  "Europe/Prague": "eu-central",
+  "Europe/Helsinki": "eu-central",
+  "Europe/Bucharest": "eu-central",
+  "Europe/Athens": "eu-central",
+  "Europe/Istanbul": "eu-central",
+  "Europe/Moscow": "eu-central",
+  "Europe/Kyiv": "eu-central",
+  // Africa
+  "Africa/Cairo": "eu-central",
+  "Africa/Lagos": "eu-west",
+  "Africa/Johannesburg": "eu-central",
+  "Africa/Nairobi": "eu-central",
+  "Africa/Casablanca": "eu-west",
+  // Middle East & Asia
+  "Asia/Jerusalem": "eu-central",
+  "Asia/Riyadh": "ap-southeast",
+  "Asia/Dubai": "ap-southeast",
+  "Asia/Tehran": "ap-southeast",
+  "Asia/Karachi": "ap-southeast",
+  "Asia/Kolkata": "ap-southeast",
+  "Asia/Dhaka": "ap-southeast",
+  "Asia/Bangkok": "ap-southeast",
+  "Asia/Jakarta": "ap-southeast",
+  "Asia/Ho_Chi_Minh": "ap-southeast",
+  "Asia/Singapore": "ap-southeast",
+  "Asia/Manila": "ap-southeast",
+  "Asia/Shanghai": "ap-northeast",
+  "Asia/Hong_Kong": "ap-southeast",
+  "Asia/Taipei": "ap-northeast",
+  "Asia/Seoul": "ap-northeast",
+  "Asia/Tokyo": "ap-northeast",
+  // Australia & Pacific
+  "Australia/Perth": "ap-southeast",
+  "Australia/Adelaide": "ap-southeast",
+  "Australia/Brisbane": "ap-southeast",
+  "Australia/Sydney": "ap-southeast",
+  "Australia/Melbourne": "ap-southeast",
+  "Pacific/Auckland": "ap-southeast",
+  "Pacific/Fiji": "ap-southeast",
+  "Pacific/Guam": "ap-southeast",
 };
 
 export const getDefaultTimezone = () => {
   const browserTz = Intl.DateTimeFormat().resolvedOptions().timeZone;
   const match = TIMEZONE_OPTIONS.find((opt) => opt.value === browserTz);
   if (match) return match.value;
-
-  // Fallback: match by UTC offset
-  const offsetMin = new Date().getTimezoneOffset();
-  const offsetHours = -offsetMin / 60;
-  const closest = TIMEZONE_OPTIONS.reduce((prev, curr) => {
-    const prevOffset = getOffsetFromLabel(prev.label);
-    const currOffset = getOffsetFromLabel(curr.label);
-    return Math.abs(currOffset - offsetHours) <
-      Math.abs(prevOffset - offsetHours)
-      ? curr
-      : prev;
-  });
-  return closest.value;
-};
-
-const getOffsetFromLabel = (label) => {
-  const match = label.match(/UTC([+-]\d{1,2}):?(\d{2})?/);
-  if (!match) return 0;
-  const hours = parseInt(match[1], 10);
-  const minutes = match[2] ? parseInt(match[2], 10) / 60 : 0;
-  return hours + (hours < 0 ? -minutes : minutes);
+  return "UTC";
 };
 
 export const getRegionByTimezone = (tz) => {
   if (TIMEZONE_TO_REGION[tz]) return TIMEZONE_TO_REGION[tz];
 
-  // Fallback: pick region by rough geographic match from label offset
-  const option = TIMEZONE_OPTIONS.find((opt) => opt.value === tz);
-  const offsetHours = option ? getOffsetFromLabel(option.label) : 0;
-  if (offsetHours <= -4) return "us-west-2";
-  if (offsetHours <= 0) return "eu-west-1";
-  if (offsetHours <= 3) return "eu-central-1";
-  if (offsetHours <= 8) return "ap-southeast-1";
-  if (offsetHours <= 10) return "ap-northeast-1";
-  return "ap-southeast-2";
+  // Fallback: guess region from timezone prefix
+  if (tz.startsWith("America/")) return "us-east";
+  if (tz.startsWith("Europe/")) return "eu-west";
+  if (tz.startsWith("Asia/")) return "ap-southeast";
+  if (tz.startsWith("Australia/") || tz.startsWith("Pacific/"))
+    return "ap-southeast";
+  return "none";
 };
 
 export const getDefaultRegion = () => {

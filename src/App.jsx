@@ -25,7 +25,7 @@ function App() {
     terminalService
       .fetchMe()
       .then((data) => {
-        updateUser(data);
+        updateUser({ info: data });
       })
       .catch(() => {
         logout();

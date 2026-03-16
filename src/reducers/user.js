@@ -7,6 +7,7 @@ const initialState = {
   forgotInfo: null,
   accessToken: null,
   refreshToken: null,
+  info: null,
 };
 
 const useUser = create(

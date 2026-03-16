@@ -60,7 +60,11 @@ const CreateWorkspace = () => {
             rules={[yupSync]}
             label="Workspace Name"
           >
-            <Input placeholder="Enter your workspace name" size="large" />
+            <Input
+              placeholder="Enter your workspace name"
+              size="large"
+              autoFocus
+            />
           </Form.Item>
           <Row gutter={16}>
             <Col span={12}>
