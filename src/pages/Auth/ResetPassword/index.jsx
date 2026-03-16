@@ -62,6 +62,7 @@ const ResetPassword = () => {
                 type={showPassword ? "text" : "password"}
                 placeholder="Enter your password"
                 size="large"
+                autoFocus
               />
               <button
                 type="button"
@@ -69,6 +70,7 @@ const ResetPassword = () => {
                 aria-label={showPassword ? "Hide password" : "Show password"}
                 onMouseDown={(event) => event.preventDefault()}
                 onClick={() => setShowPassword((prevState) => !prevState)}
+                tabIndex={-1}
               >
                 {showPassword ? <IconEyeOn /> : <IconEyeOff />}
               </button>
@@ -110,6 +112,7 @@ const ResetPassword = () => {
                 onClick={() =>
                   setShowConfirmPassword((prevState) => !prevState)
                 }
+                tabIndex={-1}
               >
                 {showConfirmPassword ? <IconEyeOn /> : <IconEyeOff />}
               </button>

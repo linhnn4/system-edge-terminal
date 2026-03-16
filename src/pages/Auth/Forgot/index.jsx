@@ -47,6 +47,7 @@ const Forgot = () => {
               placeholder="Enter your email"
               autoComplete="email"
               size="large"
+              autoFocus
             />
           </Form.Item>
           <div className="form-footer">

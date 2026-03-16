@@ -89,7 +89,7 @@ const SignUp = () => {
           <InputHiddenRemember name="email" />
           <InputHiddenRemember name="password" type="password" />
           <Form.Item name="username" rules={[yupSync]} label="Username">
-            <Input placeholder="Enter your username" size="large" />
+            <Input placeholder="Enter your username" size="large" autoFocus />
           </Form.Item>
           <Form.Item name="email" rules={[yupSync]} label="Email">
             <Input placeholder="Enter your email" size="large" />
@@ -107,6 +107,7 @@ const SignUp = () => {
                 aria-label={showPassword ? "Hide password" : "Show password"}
                 onMouseDown={(event) => event.preventDefault()}
                 onClick={() => setShowPassword((prevState) => !prevState)}
+                tabIndex={-1}
               >
                 {showPassword ? <IconEyeOn /> : <IconEyeOff />}
               </button>
@@ -148,6 +149,7 @@ const SignUp = () => {
                 onClick={() =>
                   setShowConfirmPassword((prevState) => !prevState)
                 }
+                tabIndex={-1}
               >
                 {showConfirmPassword ? <IconEyeOn /> : <IconEyeOff />}
               </button>
@@ -159,11 +161,17 @@ const SignUp = () => {
               href="/terms-of-service"
               target="_blank"
               rel="noopener noreferrer"
+              tabIndex={-1}
             >
               Terms of Service
             </a>{" "}
             and{" "}
-            <a href="/privacy-policy" target="_blank" rel="noopener noreferrer">
+            <a
+              href="/privacy-policy"
+              target="_blank"
+              rel="noopener noreferrer"
+              tabIndex={-1}
+            >
               Privacy Policy
             </a>
           </div>

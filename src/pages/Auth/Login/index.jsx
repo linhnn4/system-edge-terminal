@@ -95,6 +95,7 @@ const Login = () => {
               placeholder="Enter your email"
               autoComplete="email"
               size="large"
+              autoFocus
             />
           </Form.Item>
           <Form.Item label="Password" name="password" rules={[yupSync]}>
