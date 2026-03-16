@@ -4,6 +4,7 @@ import { persist } from "zustand/middleware";
 const initialState = {
   isLoggedIn: false,
   signupInfo: null,
+  forgotInfo: null,
   accessToken: null,
   refreshToken: null,
 };
@@ -20,6 +21,9 @@ const useUser = create(
       },
       updateSignupInfo: async (data) => {
         set({ user: { ...get().user, signupInfo: data } });
+      },
+      updateForgotInfo: async (data) => {
+        set({ user: { ...get().user, forgotInfo: data } });
       },
     }),
     {

@@ -4,6 +4,7 @@ import AuthGuard from "./AuthGuard";
 import Forgot from "./pages/Auth/Forgot/Loadable";
 import GoogleCallback from "./pages/Auth/GoogleCallback/Loadable";
 import Login from "./pages/Auth/Login/Loadable";
+import ResetPassword from "./pages/Auth/ResetPassword";
 import SignUp from "./pages/Auth/SignUp/Loadable";
 import Verification from "./pages/Auth/Verification/Loadable";
 import VerificationConfirm from "./pages/Auth/VerificationConfirm/Loadable";
@@ -67,6 +68,7 @@ function App() {
           path={ROUTERS.VERIFICATION_FORGOT}
           element={<VerificationForgot />}
         />
+        <Route path={ROUTERS.RESET_PASSWORD} element={<ResetPassword />} />
         <Route path={ROUTERS.GOOGLE_CALLBACK} element={<GoogleCallback />} />
         <Route path="*" element={<Navigate to={ROUTERS.DASHBOARD} replace />} />
       </Routes>

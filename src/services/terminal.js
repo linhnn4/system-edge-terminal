@@ -8,6 +8,10 @@ const requestEmailVerify = (body) =>
   client.post(`/auth/request-email-verify`, body);
 const verifyEmail = (params, config) =>
   client.get(`/auth/verify-email`, { params, ...config });
+const forgotPassword = (body) =>
+  client.post(`/auth/request-password-reset`, body);
+const resetPassword = (body) => client.post(`/auth/reset-password`, body);
+
 const terminalService = {
   signup,
   login,
@@ -15,6 +19,8 @@ const terminalService = {
   fetchMe,
   requestEmailVerify,
   verifyEmail,
+  forgotPassword,
+  resetPassword,
 };
 
 export default terminalService;
