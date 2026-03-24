@@ -38,6 +38,7 @@ export const ROUTERS = {
   VERIFICATION_CONFIRM: "/auth/verify-email",
   VERIFICATION_FORGOT: "/verification-forgot",
   GOOGLE_CALLBACK: "/auth/google/callback",
+  CTRADER_CALLBACK: "/ctrader/callback",
   RESET_PASSWORD: "/reset-password",
 };
 

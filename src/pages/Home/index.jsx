@@ -35,7 +35,7 @@ const Home = () => {
           Upload your first trades to generate and review the data analysis
         </div>
         <div
-          className="text-link"
+          className="text-link-a"
           onClick={() => navigate(ROUTERS.IMPORT_DATA)}
         >
           Go To Import

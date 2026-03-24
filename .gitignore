@@ -22,3 +22,7 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# cTrader server secrets
+server/.env.ctrader
+server/.ctrader-state.json

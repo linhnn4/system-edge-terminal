@@ -198,7 +198,7 @@ body {
   line-height: var(--line-height-20, 1.25rem); /* 142.857% */
 }
 
-.text-link {
+.text-link-a {
   cursor: pointer;
   color: var(--color-white-solid, #fff);
 
@@ -568,5 +568,18 @@ body {
         );
       }
     }
+  }
+}
+
+.workspace-popover {
+  background: linear-gradient(180deg, #06090e 0%, #151f36 100%);
+  border-radius: 0.75rem;
+  .ant-popover-container {
+    border-radius: 0.75rem;
+    border: var(--stroke-weight-1, 1px) solid
+      var(--color-grey-70050, rgba(51, 65, 85, 0.5));
+    background: rgba(48, 61, 82, 0.5);
+    box-shadow: 16px 16px 24px 0 rgba(26, 37, 57, 0.25);
+    backdrop-filter: blur(24px);
   }
 }

@@ -10,7 +10,9 @@ import Verification from "./pages/Auth/Verification/Loadable";
 import VerificationConfirm from "./pages/Auth/VerificationConfirm/Loadable";
 import VerificationForgot from "./pages/Auth/VerificationForgot/Loadable";
 import CreateWorkspace from "./pages/CreateWorkspace/Loadable";
+import CTraderCallback from "./pages/CTraderCallback/Loadable";
 import Home from "./pages/Home/Loadable";
+import Import from "./pages/Import/Loadable";
 import useUser from "./reducers/user";
 import terminalService from "./services/terminal";
 import { ROUTERS } from "./utils/routers";
@@ -42,7 +44,7 @@ function App() {
             path={ROUTERS.CREATE_WORKSPACE}
             element={<CreateWorkspace />}
           />
-          <Route path={ROUTERS.IMPORT_DATA} element={<Home />} />
+          <Route path={ROUTERS.IMPORT_DATA} element={<Import />} />
           <Route path={ROUTERS.TRADES} element={<Home />} />
           <Route path={ROUTERS.SYSTEM} element={<Home />} />
           <Route path={ROUTERS.BENCHMARKS} element={<Home />} />
@@ -70,6 +72,7 @@ function App() {
         />
         <Route path={ROUTERS.RESET_PASSWORD} element={<ResetPassword />} />
         <Route path={ROUTERS.GOOGLE_CALLBACK} element={<GoogleCallback />} />
+        <Route path={ROUTERS.CTRADER_CALLBACK} element={<CTraderCallback />} />
         <Route path="*" element={<Navigate to={ROUTERS.DASHBOARD} replace />} />
       </Routes>
     </BrowserRouter>

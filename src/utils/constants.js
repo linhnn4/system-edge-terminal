@@ -3,6 +3,8 @@ const {
   VITE_WS_BASE_URL,
   VITE_RECAPTCHA_SITE_KEY,
   VITE_SCORING_API_BASE_URL,
+  VITE_CTRADER_CLIENT_ID,
+  VITE_CTRADER_REDIRECT_URI,
 } = import.meta.env;
 
 export const API_URL = VITE_API_BASE_URL;
@@ -10,6 +12,11 @@ export const WS_URL = VITE_WS_BASE_URL;
 export const RECAPTCHA_SITE_KEY = VITE_RECAPTCHA_SITE_KEY;
 export const SCORING_API_URL = VITE_SCORING_API_BASE_URL;
 export const CONFIG_RESET_TIME = 1.5 * 60 * 1000; // 1.5 minutes in milliseconds
+
+// cTrader Open API
+export const CTRADER_AUTH_URL = "https://openapi.ctrader.com/apps/auth";
+export const CTRADER_CLIENT_ID = VITE_CTRADER_CLIENT_ID;
+export const CTRADER_REDIRECT_URI = VITE_CTRADER_REDIRECT_URI;
 
 export const TIMEZONE_OPTIONS = [
   { label: "UTC", value: "UTC" },
