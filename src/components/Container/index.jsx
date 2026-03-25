@@ -33,6 +33,20 @@ const Wrapper = styled.div`
   }
 `;
 
+const ContentWrapper = styled.div`
+  display: flex;
+  height: 18.75rem;
+  padding: 1.75rem 0;
+  align-items: center;
+  gap: 0.625rem;
+  align-self: stretch;
+  border-radius: 0.75rem;
+  background: var(--color-grey-80050, rgba(30, 41, 59, 0.5));
+  backdrop-filter: blur(12px);
+  flex-direction: column;
+  justify-content: center;
+`;
+
 const Container = ({ children }) => {
   return (
     <Wrapper>
@@ -42,4 +56,5 @@ const Container = ({ children }) => {
   );
 };
 
+export { ContentWrapper };
 export default Container;

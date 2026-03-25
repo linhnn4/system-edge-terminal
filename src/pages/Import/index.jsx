@@ -1,6 +1,6 @@
 import IconCTrader from "@/assets/svgs/ctrader.svg?react";
 import IconDashboard from "@/assets/svgs/dashboard.svg?react";
-import Containner from "@/components/Container";
+import { ContentWrapper } from "@/components/Container";
 import useUser from "@/reducers/user";
 import ctraderService from "@/services/ctraderService";
 import {
@@ -14,20 +14,6 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { useShallow } from "zustand/react/shallow";
-
-const Wrapper = styled.div`
-  display: flex;
-  height: 18.75rem;
-  padding: 1.75rem 0;
-  align-items: center;
-  gap: 0.625rem;
-  align-self: stretch;
-  border-radius: 0.75rem;
-  background: var(--color-grey-80050, rgba(30, 41, 59, 0.5));
-  backdrop-filter: blur(12px);
-  flex-direction: column;
-  justify-content: center;
-`;
 
 const CTraderCard = styled.div`
   display: flex;
@@ -279,7 +265,7 @@ const Import = () => {
   };
 
   return (
-    <Containner>
+    <>
       <div className="page-title mb-2">Import</div>
       <div className="page-sub-title mb-6">
         Welcome, {info?.username}. Your system is evolving.
@@ -333,7 +319,7 @@ const Import = () => {
         </div>
       </CTraderCard>
 
-      <Wrapper>
+      <ContentWrapper>
         <IconDashboard />
         <div className="text-desc mb-2">
           Upload your first trades to generate and review the data analysis
@@ -344,7 +330,7 @@ const Import = () => {
         >
           Go To Import
         </div>
-      </Wrapper>
+      </ContentWrapper>
 
       <Modal
         title="Change CTrader Account"
@@ -371,7 +357,7 @@ const Import = () => {
           }))}
         />
       </Modal>
-    </Containner>
+    </>
   );
 };
 
