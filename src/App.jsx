@@ -1,21 +1,30 @@
-import { useEffect } from "react";
+import { lazy, useEffect } from "react";
 import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 import AuthGuard from "./AuthGuard";
-import Forgot from "./pages/Auth/Forgot/Loadable";
-import GoogleCallback from "./pages/Auth/GoogleCallback/Loadable";
-import Login from "./pages/Auth/Login/Loadable";
-import ResetPassword from "./pages/Auth/ResetPassword";
-import SignUp from "./pages/Auth/SignUp/Loadable";
-import Verification from "./pages/Auth/Verification/Loadable";
-import VerificationConfirm from "./pages/Auth/VerificationConfirm/Loadable";
-import VerificationForgot from "./pages/Auth/VerificationForgot/Loadable";
-import CreateWorkspace from "./pages/CreateWorkspace/Loadable";
-import CTraderCallback from "./pages/CTraderCallback/Loadable";
-import Home from "./pages/Home/Loadable";
-import Import from "./pages/Import/Loadable";
+import UnAuthGuard from "./UnAuthGuard";
 import useUser from "./reducers/user";
 import terminalService from "./services/terminal";
 import { ROUTERS } from "./utils/routers";
+
+// Authenticated pages
+const Home = lazy(() => import("./pages/Home"));
+const Import = lazy(() => import("./pages/Import"));
+const CreateWorkspace = lazy(() => import("./pages/CreateWorkspace"));
+
+// Public pages
+const Login = lazy(() => import("./pages/Auth/Login"));
+const SignUp = lazy(() => import("./pages/Auth/SignUp"));
+const Forgot = lazy(() => import("./pages/Auth/Forgot"));
+const ResetPassword = lazy(() => import("./pages/Auth/ResetPassword"));
+const Verification = lazy(() => import("./pages/Auth/Verification"));
+const VerificationConfirm = lazy(
+  () => import("./pages/Auth/VerificationConfirm"),
+);
+const VerificationForgot = lazy(
+  () => import("./pages/Auth/VerificationForgot"),
+);
+const GoogleCallback = lazy(() => import("./pages/Auth/GoogleCallback"));
+const CTraderCallback = lazy(() => import("./pages/CTraderCallback"));
 
 function App() {
   const accessToken = useUser((state) => state.user.accessToken);
@@ -58,21 +67,26 @@ function App() {
           <Route path={ROUTERS.SETTINGS.SECURITY} element={<Home />} />
           <Route path={ROUTERS.SETTINGS.BILLING} element={<Home />} />
         </Route>
-        <Route path={ROUTERS.LOGIN} element={<Login />} />
-        <Route path={ROUTERS.SIGNUP} element={<SignUp />} />
-        <Route path={ROUTERS.FORGOT_PASSWORD} element={<Forgot />} />
-        <Route path={ROUTERS.VERIFICATION} element={<Verification />} />
-        <Route
-          path={ROUTERS.VERIFICATION_CONFIRM}
-          element={<VerificationConfirm />}
-        />
-        <Route
-          path={ROUTERS.VERIFICATION_FORGOT}
-          element={<VerificationForgot />}
-        />
-        <Route path={ROUTERS.RESET_PASSWORD} element={<ResetPassword />} />
-        <Route path={ROUTERS.GOOGLE_CALLBACK} element={<GoogleCallback />} />
-        <Route path={ROUTERS.CTRADER_CALLBACK} element={<CTraderCallback />} />
+        <Route element={<UnAuthGuard />}>
+          <Route path={ROUTERS.LOGIN} element={<Login />} />
+          <Route path={ROUTERS.SIGNUP} element={<SignUp />} />
+          <Route path={ROUTERS.FORGOT_PASSWORD} element={<Forgot />} />
+          <Route path={ROUTERS.VERIFICATION} element={<Verification />} />
+          <Route
+            path={ROUTERS.VERIFICATION_CONFIRM}
+            element={<VerificationConfirm />}
+          />
+          <Route
+            path={ROUTERS.VERIFICATION_FORGOT}
+            element={<VerificationForgot />}
+          />
+          <Route path={ROUTERS.RESET_PASSWORD} element={<ResetPassword />} />
+          <Route path={ROUTERS.GOOGLE_CALLBACK} element={<GoogleCallback />} />
+          <Route
+            path={ROUTERS.CTRADER_CALLBACK}
+            element={<CTraderCallback />}
+          />
+        </Route>
         <Route path="*" element={<Navigate to={ROUTERS.DASHBOARD} replace />} />
       </Routes>
     </BrowserRouter>
