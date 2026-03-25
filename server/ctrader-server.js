@@ -247,9 +247,37 @@ app.get("/ctrader/accounts", async (_req, res) => {
 });
 
 // ---- Disconnect ----
-app.post("/ctrader/disconnect", (_req, res) => {
+app.post("/ctrader/disconnect", async (_req, res) => {
+  // Try to revoke access token AND refresh token so cTrader fully invalidates
+  const tokensToRevoke = [
+    state.access_token && { access_token: state.access_token },
+    state.refresh_token && { token: state.refresh_token },
+  ].filter(Boolean);
+
+  for (const tokenPayload of tokensToRevoke) {
+    try {
+      const params = new URLSearchParams({
+        ...tokenPayload,
+        client_id: CLIENT_ID,
+        client_secret: CLIENT_SECRET,
+      });
+      await fetch(
+        `https://openapi.ctrader.com/apps/token?grant_type=delete&${params}`,
+      );
+      console.log("🗑️ Token revoked:", Object.keys(tokenPayload).join(", "));
+    } catch (err) {
+      console.warn("Token revoke failed (non-critical):", err.message);
+    }
+  }
+
   state = { connected: false };
-  saveState(state);
+  // Remove state file completely for a clean slate
+  try {
+    if (fs.existsSync(STATE_FILE)) fs.unlinkSync(STATE_FILE);
+  } catch {
+    /* fallback: just overwrite */
+    saveState(state);
+  }
   console.log("🔌 Disconnected from CTrader");
   res.json({ success: true });
 });

@@ -210,6 +210,35 @@ const Import = () => {
       onOk: async () => {
         try {
           setDisconnecting(true);
+
+          // Clear cTrader SSO session via hidden iframe
+          try {
+            await new Promise((resolve) => {
+              const iframe = document.createElement("iframe");
+              iframe.style.cssText =
+                "position:fixed;width:0;height:0;border:none;opacity:0;pointer-events:none;";
+              iframe.src = "https://id.ctrader.com/logout";
+              iframe.onload = () => {
+                setTimeout(() => {
+                  iframe.remove();
+                  resolve();
+                }, 2000);
+              };
+              // Fallback if onload never fires
+              setTimeout(() => {
+                try {
+                  iframe.remove();
+                } catch {
+                  /* ignore */
+                }
+                resolve();
+              }, 1000);
+              document.body.appendChild(iframe);
+            });
+          } catch {
+            /* non-critical */
+          }
+
           await ctraderService.disconnect();
           setCtraderStatus(null);
           setCtraderAccounts([]);
