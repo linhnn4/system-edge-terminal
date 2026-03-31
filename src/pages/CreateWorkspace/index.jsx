@@ -1,4 +1,5 @@
 import IconCheckFill from "@/assets/svgs/check-fill.svg?react";
+import { REGION_OPTIONS, TIMEZONE_OPTIONS } from "@/configs/timezone";
 import useYup from "@/hooks/useYup";
 import useUser from "@/reducers/user";
 import notificationService from "@/services/notificationService";
@@ -8,10 +9,9 @@ import {
   getDefaultTimezone,
   getRegionByTimezone,
 } from "@/utils";
-import { REGION_OPTIONS, TIMEZONE_OPTIONS } from "@/utils/constants";
 import { ROUTERS } from "@/utils/routers";
 import { Button, Col, Form, Input, Row, Select } from "antd";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useShallow } from "zustand/shallow";
 
@@ -27,6 +27,7 @@ const CreateWorkspace = () => {
   const [form] = Form.useForm();
   const { yupSync } = useYup();
   const [isSubmiting, setIsSubmiting] = useState(false);
+  const inputRef = useRef(null);
   const defaultTimezone = getDefaultTimezone();
   const defaultRegion = getDefaultRegion();
   const newWorkspace = useMemo(() => {
@@ -62,6 +63,12 @@ const CreateWorkspace = () => {
     }
   }, [isLoggedIn, info, navigate]);
 
+  useEffect(() => {
+    if (newWorkspace && inputRef.current) {
+      inputRef.current.focus();
+    }
+  }, [newWorkspace]);
+
   return (
     <div className="auth-form-wrapper">
       <div className="auth-form create-workspace">
@@ -95,9 +102,9 @@ const CreateWorkspace = () => {
               label="Workspace Name"
             >
               <Input
+                ref={inputRef}
                 placeholder="Enter your workspace name"
                 size="large"
-                ref={(input) => input && input.focus()}
               />
             </Form.Item>
             <Row gutter={16}>
