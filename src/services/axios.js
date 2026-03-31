@@ -93,7 +93,17 @@ const client = /** @type {any} */ (
 client.interceptors.request.use(beforeRequest);
 
 client.interceptors.response.use(
-  ({ data: response }) => response,
+  ({ data: response }) => {
+    const { code, data, message } = response || {};
+    if (code === 200) {
+      return data;
+    } else {
+      notificationService.error({
+        title: `${code} - ${message || DEFAULT_ERROR}`,
+      });
+      return Promise.reject({ code, message });
+    }
+  },
   async (error) => {
     const originalRequest = error.config;
     const isRefreshEndpoint = originalRequest.url?.includes("/auth/refresh");

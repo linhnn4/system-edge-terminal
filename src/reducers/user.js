@@ -8,6 +8,7 @@ const initialState = {
   accessToken: null,
   refreshToken: null,
   info: null,
+  workspaces: [],
 };
 
 const useUser = create(

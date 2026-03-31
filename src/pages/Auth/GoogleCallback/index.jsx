@@ -2,6 +2,7 @@ import LoadingIndicator from "@/components/LoadingIndicator";
 import useUser from "@/reducers/user";
 import notificationService from "@/services/notificationService";
 import terminalService from "@/services/terminal";
+import { ROUTERS } from "@/utils/routers";
 import { useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 
@@ -30,7 +31,7 @@ const GoogleCallback = () => {
               ? "Google login was cancelled."
               : `Google login failed: ${error}`,
         });
-        navigate("/login");
+        navigate(ROUTERS.LOGIN);
         return;
       }
 
@@ -38,7 +39,7 @@ const GoogleCallback = () => {
         notificationService.error({
           title: "No access token received from Google login.",
         });
-        navigate("/login");
+        navigate(ROUTERS.LOGIN);
         return;
       }
 
@@ -48,18 +49,15 @@ const GoogleCallback = () => {
           refreshToken,
         });
 
-        const resultMe = await terminalService.fetchMe();
-        await updateUser({
-          ...resultMe,
-          isLoggedIn: true,
-        });
+        const result = await terminalService.fetchMe();
+        updateUser({ info: result, isLoggedIn: true });
 
-        navigate("/");
+        navigate(ROUTERS.DASHBOARD);
       } catch {
         notificationService.error({
           title: "Google login succeeded but failed to retrieve user info.",
         });
-        navigate("/login");
+        navigate(ROUTERS.LOGIN);
       }
     };
 

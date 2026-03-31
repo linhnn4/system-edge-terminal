@@ -4,10 +4,20 @@ import { useShallow } from "zustand/shallow";
 import Containner from "./components/Container";
 import LoadingIndicator from "./components/LoadingIndicator";
 import useUser from "./reducers/user";
+import { ROUTERS } from "./utils/routers";
 
 const AuthGuard = () => {
-  const isLoggedIn = useUser(useShallow((state) => state.user.isLoggedIn));
+  const { isLoggedIn, info } = useUser(
+    useShallow((state) => ({
+      isLoggedIn: state.user.isLoggedIn,
+      info: state.user.info,
+    })),
+  );
+  console.log("AuthGuard", { isLoggedIn, info });
 
+  if (isLoggedIn && info?.is_first_login) {
+    return <Navigate to={ROUTERS.CREATE_WORKSPACE} replace />;
+  }
   return isLoggedIn ? (
     <Containner>
       <Suspense fallback={<LoadingIndicator />}>
@@ -15,7 +25,7 @@ const AuthGuard = () => {
       </Suspense>
     </Containner>
   ) : (
-    <Navigate to="/login" replace />
+    <Navigate to={ROUTERS.LOGIN} replace />
   );
 };
 

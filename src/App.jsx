@@ -35,8 +35,8 @@ function App() {
     if (!accessToken) return;
     terminalService
       .fetchMe()
-      .then((data) => {
-        updateUser({ info: data });
+      .then((res) => {
+        updateUser({ info: res.data });
       })
       .catch(() => {
         logout();
@@ -49,10 +49,7 @@ function App() {
       <Routes>
         <Route element={<AuthGuard />}>
           <Route path={ROUTERS.DASHBOARD} element={<Home />} />
-          <Route
-            path={ROUTERS.CREATE_WORKSPACE}
-            element={<CreateWorkspace />}
-          />
+
           <Route path={ROUTERS.IMPORT_DATA} element={<Import />} />
           <Route path={ROUTERS.TRADES} element={<Home />} />
           <Route path={ROUTERS.SYSTEM} element={<Home />} />
@@ -87,6 +84,7 @@ function App() {
             element={<CTraderCallback />}
           />
         </Route>
+        <Route path={ROUTERS.CREATE_WORKSPACE} element={<CreateWorkspace />} />
         <Route path="*" element={<Navigate to={ROUTERS.DASHBOARD} replace />} />
       </Routes>
     </BrowserRouter>

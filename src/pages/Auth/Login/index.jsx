@@ -8,6 +8,7 @@ import useUser from "@/reducers/user";
 import terminalService from "@/services/terminal";
 import { API_URL } from "@/utils/constants";
 import ERRORS from "@/utils/errors";
+import { ROUTERS } from "@/utils/routers";
 import { Button, Form, Input } from "antd";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
@@ -41,16 +42,15 @@ const Login = () => {
       });
       const resultMe = await terminalService.fetchMe();
       updateUser({
-        ...result,
         ...resultMe,
         isLoggedIn: true,
       });
-      navigate("/");
+      navigate(ROUTERS.DASHBOARD);
     } catch (e) {
       // handle error not verified
       if (e?.data?.message === ERRORS.NOT_VERIFIED) {
         updateSignupInfo({ values, isSend: false });
-        navigate("/verification");
+        navigate(ROUTERS.VERIFICATION);
       }
     } finally {
       setIsSubmiting(false);
@@ -144,7 +144,7 @@ const Login = () => {
           </div>
           <div className="text-link flex justify-center items-center gap-2">
             Don't have an account?
-            <Button type="link" onClick={() => navigate("/signup")}>
+            <Button type="link" onClick={() => navigate(ROUTERS.SIGNUP)}>
               Sign Up Now
             </Button>
           </div>
