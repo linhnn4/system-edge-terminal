@@ -11,6 +11,8 @@ const verifyEmail = (params, config) =>
 const forgotPassword = (body) =>
   client.post(`/auth/request-password-reset`, body);
 const resetPassword = (body) => client.post(`/auth/reset-password`, body);
+const fetchWorkspaces = () => client.get(`/workspaces`);
+const createWorkspace = (body) => client.post(`/workspaces`, body);
 
 const terminalService = {
   signup,
@@ -21,6 +23,8 @@ const terminalService = {
   verifyEmail,
   forgotPassword,
   resetPassword,
+  fetchWorkspaces,
+  createWorkspace,
 };
 
 export default terminalService;

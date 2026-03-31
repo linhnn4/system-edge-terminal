@@ -1,7 +1,8 @@
-import { lazy, useEffect } from "react";
+import { lazy, useEffect, useState } from "react";
 import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 import AuthGuard from "./AuthGuard";
 import UnAuthGuard from "./UnAuthGuard";
+import LoadingIndicator from "./components/LoadingIndicator";
 import useUser from "./reducers/user";
 import terminalService from "./services/terminal";
 import { ROUTERS } from "./utils/routers";
@@ -30,19 +31,30 @@ function App() {
   const accessToken = useUser((state) => state.user.accessToken);
   const updateUser = useUser((state) => state.updateUser);
   const logout = useUser((state) => state.logout);
+  const [loading, setLoading] = useState(!!accessToken);
 
   useEffect(() => {
     if (!accessToken) return;
+    setLoading(true);
     terminalService
       .fetchMe()
       .then((res) => {
-        updateUser({ info: res.data });
+        updateUser({ info: res });
+        return terminalService.fetchWorkspaces();
+      })
+      .then((res) => {
+        updateUser({ workspaces: res });
       })
       .catch(() => {
         logout();
+      })
+      .finally(() => {
+        setLoading(false);
       });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  if (loading) return <LoadingIndicator />;
 
   return (
     <BrowserRouter>

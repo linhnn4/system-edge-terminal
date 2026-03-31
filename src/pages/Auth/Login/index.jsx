@@ -41,8 +41,10 @@ const Login = () => {
         refreshToken: result.refresh_token,
       });
       const resultMe = await terminalService.fetchMe();
+      const resultWorkspaces = await terminalService.fetchWorkspaces();
       updateUser({
-        ...resultMe,
+        info: resultMe,
+        workspaces: resultWorkspaces,
         isLoggedIn: true,
       });
       navigate(ROUTERS.DASHBOARD);
