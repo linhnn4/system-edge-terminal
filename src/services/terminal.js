@@ -13,6 +13,10 @@ const forgotPassword = (body) =>
 const resetPassword = (body) => client.post(`/auth/reset-password`, body);
 const fetchWorkspaces = () => client.get(`/workspaces`);
 const createWorkspace = (body) => client.post(`/workspaces`, body);
+const updateWorkspace = ({ workspace_id, ...body }) =>
+  client.put(`/workspaces/${workspace_id}`, body);
+const deleteWorkspace = (workspace_id) =>
+  client.delete(`/workspaces/${workspace_id}`);
 
 const terminalService = {
   signup,
@@ -25,6 +29,8 @@ const terminalService = {
   resetPassword,
   fetchWorkspaces,
   createWorkspace,
+  updateWorkspace,
+  deleteWorkspace,
 };
 
 export default terminalService;

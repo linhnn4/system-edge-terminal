@@ -8,6 +8,7 @@ import useRecaptchaV3 from "@/hooks/useRecaptchaV3";
 import useYup from "@/hooks/useYup";
 import useUser from "@/reducers/user";
 import terminalService from "@/services/terminal";
+import { API_URL } from "@/utils/constants";
 import { Button, Form, Input } from "antd";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
@@ -81,7 +82,14 @@ const SignUp = () => {
             Manage Your Trading Faster!
           </div>
         </div>
-        <Button size="large" block className="google-btn text-md-regular">
+        <Button
+          size="large"
+          block
+          className="google-btn text-md-regular"
+          onClick={() => {
+            window.location.href = `${API_URL}/auth/google/login?from_url=${window.location.origin}`;
+          }}
+        >
           <IconGoogle fontSize="1.5rem" />
           Sign Up with Google
         </Button>

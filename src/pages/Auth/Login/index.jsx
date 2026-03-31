@@ -44,7 +44,7 @@ const Login = () => {
       const resultWorkspaces = await terminalService.fetchWorkspaces();
       updateUser({
         info: resultMe,
-        workspaces: resultWorkspaces,
+        workspaces: resultWorkspaces.workspaces,
         isLoggedIn: true,
       });
       navigate(ROUTERS.DASHBOARD);

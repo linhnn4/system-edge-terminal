@@ -43,7 +43,7 @@ function App() {
         return terminalService.fetchWorkspaces();
       })
       .then((res) => {
-        updateUser({ workspaces: res });
+        updateUser({ workspaces: res.workspaces });
       })
       .catch(() => {
         logout();
