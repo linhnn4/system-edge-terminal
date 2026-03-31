@@ -8,9 +8,7 @@ import { useNavigate } from "react-router-dom";
 const GoogleCallback = () => {
   const navigate = useNavigate();
   const hasCalled = useRef(false);
-  const { updateUser } = useUser((state) => ({
-    updateUser: state.updateUser,
-  }));
+  const updateUser = useUser((state) => state.updateUser);
 
   useEffect(() => {
     if (hasCalled.current) return;

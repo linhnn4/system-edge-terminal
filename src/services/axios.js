@@ -97,9 +97,9 @@ client.interceptors.response.use(
   async (error) => {
     const originalRequest = error.config;
     const isRefreshEndpoint = originalRequest.url?.includes("/auth/refresh");
-
+    console.log({ error, isRefreshEndpoint });
     if (
-      (error.response?.status === 401 || error.response?.status === 403) &&
+      (error?.status === 401 || error?.status === 403) &&
       !originalRequest._retry &&
       !isRefreshEndpoint &&
       !originalRequest._skipRefresh

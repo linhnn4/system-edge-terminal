@@ -28,7 +28,7 @@ const Login = () => {
   );
 
   const loginWithGoogle = () => {
-    window.location.href = `${API_URL}/auth/google/login`;
+    window.location.href = `${API_URL}/auth/google/login?from_url=${window.location.origin}`;
   };
 
   const onFinish = async (values) => {

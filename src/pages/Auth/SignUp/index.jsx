@@ -37,7 +37,11 @@ const SignUp = () => {
         console.error("reCAPTCHA verification failed");
         return;
       }
-      const signupInfo = { ...values, recaptcha_token: token };
+      const signupInfo = {
+        ...values,
+        recaptcha_token: token,
+        frontend_url: window.location.origin,
+      };
       await terminalService.signup(signupInfo);
       updateSignupInfo({ values: signupInfo, isSend: true });
 
