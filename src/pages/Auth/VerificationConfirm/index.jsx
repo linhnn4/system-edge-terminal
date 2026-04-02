@@ -78,31 +78,33 @@ const VerificationConfirm = () => {
           )}
         </div>
         <div className="actions">
-          <Button
-            type="primary"
-            block
-            size="large"
-            disabled={isSubmiting || isResend}
-            onClick={onResend}
-          >
-            {isResend ? (
-              <>
-                Resend Verification Email after{" "}
-                <Countdown
-                  date={Date.now() + CONFIG_RESET_TIME}
-                  renderer={({ seconds, minutes }) =>
-                    `${pad(minutes)}:${pad(seconds)}`
-                  }
-                  onComplete={() => {
-                    setIsResend(false);
-                    setIsSubmiting(false);
-                  }}
-                />
-              </>
-            ) : (
-              "Resend Verification Email"
-            )}
-          </Button>
+          {isError && (
+            <Button
+              type="primary"
+              block
+              size="large"
+              disabled={isSubmiting || isResend}
+              onClick={onResend}
+            >
+              {isResend ? (
+                <>
+                  Resend Verification Email after{" "}
+                  <Countdown
+                    date={Date.now() + CONFIG_RESET_TIME}
+                    renderer={({ seconds, minutes }) =>
+                      `${pad(minutes)}:${pad(seconds)}`
+                    }
+                    onComplete={() => {
+                      setIsResend(false);
+                      setIsSubmiting(false);
+                    }}
+                  />
+                </>
+              ) : (
+                "Resend Verification Email"
+              )}
+            </Button>
+          )}
           <div className="text-link flex justify-center items-center gap-2">
             <Button type="link" onClick={() => navigate("/login")}>
               Back to Login

@@ -169,7 +169,7 @@ const SideBar = () => {
         <div className="sidebar-header">
           <Popover
             content={popoverContent}
-            trigger={["click", "hover"]}
+            trigger={["click"]}
             placement="bottomLeft"
             open={isPopoverOpen && !isCollapsed}
             onOpenChange={setIsPopoverOpen}

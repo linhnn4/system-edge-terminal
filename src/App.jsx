@@ -1,5 +1,6 @@
 import { lazy, useEffect, useState } from "react";
 import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
+import { useShallow } from "zustand/shallow";
 import AuthGuard from "./AuthGuard";
 import UnAuthGuard from "./UnAuthGuard";
 import LoadingIndicator from "./components/LoadingIndicator";
@@ -28,9 +29,13 @@ const GoogleCallback = lazy(() => import("./pages/Auth/GoogleCallback"));
 const CTraderCallback = lazy(() => import("./pages/CTraderCallback"));
 
 function App() {
-  const accessToken = useUser((state) => state.user.accessToken);
-  const updateUser = useUser((state) => state.updateUser);
-  const logout = useUser((state) => state.logout);
+  const { accessToken, updateUser, logout } = useUser(
+    useShallow((state) => ({
+      accessToken: state.user.isLoggedIn,
+      updateUser: state.updateUser,
+      logout: state.logout,
+    })),
+  );
   const [loading, setLoading] = useState(!!accessToken);
 
   useEffect(() => {
@@ -39,7 +44,7 @@ function App() {
     terminalService
       .fetchMe()
       .then((res) => {
-        updateUser({ info: res });
+        updateUser({ info: { ...res, is_first_login: false } });
         return terminalService.fetchWorkspaces();
       })
       .then((res) => {

@@ -16,11 +16,12 @@ import { useNavigate } from "react-router-dom";
 import { useShallow } from "zustand/shallow";
 
 const CreateWorkspace = () => {
-  const { isLoggedIn, info, workspaces } = useUser(
+  const { isLoggedIn, info, workspaces, updateUser } = useUser(
     useShallow((state) => ({
       isLoggedIn: state.user.isLoggedIn,
       workspaces: state.user.workspaces,
       info: state.user.info,
+      updateUser: state.updateUser,
     })),
   );
   const navigate = useNavigate();
@@ -45,6 +46,7 @@ const CreateWorkspace = () => {
         retention_days: 30,
         workspace_id: newWorkspace.id,
       });
+      updateUser({ info: { ...info, is_first_login: false } });
       notificationService.success({
         title: "Workspace created successfully!",
       });
@@ -59,7 +61,7 @@ const CreateWorkspace = () => {
 
   useEffect(() => {
     if (!isLoggedIn || !info || info.is_first_login === false) {
-      navigate(ROUTERS.LOGIN);
+      navigate(ROUTERS.DASHBOARD);
     }
   }, [isLoggedIn, info, navigate]);
 

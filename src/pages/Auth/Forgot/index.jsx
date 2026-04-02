@@ -19,7 +19,10 @@ const Forgot = () => {
   const onFinish = async (values) => {
     setIsSubmiting(true);
     try {
-      await terminalService.forgotPassword(values);
+      await terminalService.forgotPassword({
+        ...values,
+        frontend_url: window.location.origin,
+      });
       updateForgotInfo(values);
       notificationService.success({
         title: "Please check your email for reset password instructions.",
