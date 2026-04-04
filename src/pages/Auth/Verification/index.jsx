@@ -4,6 +4,7 @@ import useUser from "@/reducers/user";
 import terminalService from "@/services/terminal";
 import { pad } from "@/utils";
 import { CONFIG_RESET_TIME } from "@/utils/constants";
+import { ROUTERS } from "@/utils/routers";
 import { Button } from "antd";
 import { useEffect, useState } from "react";
 import Countdown from "react-countdown";
@@ -19,7 +20,10 @@ const Verification = () => {
   const onResend = async () => {
     setIsSubmiting(true);
     try {
-      await terminalService.requestEmailVerify({ email: signupInfo?.email });
+      await terminalService.requestEmailVerify({
+        email: signupInfo?.email,
+        frontend_url: window.location.origin,
+      });
       setIsResend(true);
     } catch (e) {
       console.log(e);
@@ -30,7 +34,7 @@ const Verification = () => {
 
   useEffect(() => {
     if (!signupInfo) {
-      navigate("/signup");
+      navigate(ROUTERS.SIGNUP);
     }
   }, [navigate, signupInfo]);
 
@@ -39,7 +43,10 @@ const Verification = () => {
       <div className="auth-form verification">
         <div className="title">
           <div className="back">
-            <IconBack fontSize="1.25rem" onClick={() => navigate("/signup")} />
+            <IconBack
+              fontSize="1.25rem"
+              onClick={() => navigate(ROUTERS.LOGIN)}
+            />
           </div>
           Account Verification
         </div>

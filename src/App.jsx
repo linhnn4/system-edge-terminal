@@ -44,7 +44,7 @@ function App() {
     terminalService
       .fetchMe()
       .then((res) => {
-        updateUser({ info: { ...res, is_first_login: false } });
+        updateUser({ info: res });
         return terminalService.fetchWorkspaces();
       })
       .then((res) => {

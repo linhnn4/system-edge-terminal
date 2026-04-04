@@ -1,6 +1,7 @@
 const ERRORS = {
-  NOT_VERIFIED: "Please verify your email before logging in",
-  ALREADY_VERIFIED: "Email already verified",
+  PENDING_EMAIL_VERIFY: "pending_email_verify",
+  EMAIL_NOT_VERIFIED: "EMAIL_NOT_VERIFIED",
+  ALREADY_VERIFIED: "already_verified",
 };
 
 export default ERRORS;

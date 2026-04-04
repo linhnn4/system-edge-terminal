@@ -50,8 +50,9 @@ const Login = () => {
       navigate(ROUTERS.DASHBOARD);
     } catch (e) {
       // handle error not verified
-      if (e?.data?.message === ERRORS.NOT_VERIFIED) {
-        updateSignupInfo({ values, isSend: false });
+      if (e?.data?.status === ERRORS.EMAIL_NOT_VERIFIED) {
+        console.log({ values });
+        updateSignupInfo({ ...values, isSend: false });
         navigate(ROUTERS.VERIFICATION);
       }
     } finally {

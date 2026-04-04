@@ -6,6 +6,7 @@ import terminalService from "@/services/terminal";
 import { pad } from "@/utils";
 import { CONFIG_RESET_TIME } from "@/utils/constants";
 import ERRORS from "@/utils/errors";
+import { ROUTERS } from "@/utils/routers";
 import { useQuery } from "@tanstack/react-query";
 import { Button } from "antd";
 import Lottie from "lottie-react";
@@ -20,6 +21,7 @@ const VerificationConfirm = () => {
   const navigate = useNavigate();
   const [isSubmiting, setIsSubmiting] = useState(false);
   const [isResend, setIsResend] = useState(false);
+  const [countdownKey, setCountdownKey] = useState(0);
 
   const { isLoading, isError } = useQuery({
     queryKey: ["verifyEmail", { token, email }],
@@ -31,16 +33,21 @@ const VerificationConfirm = () => {
   const onResend = async () => {
     setIsSubmiting(true);
     try {
-      const result = await terminalService.requestEmailVerify({ email });
+      const result = await terminalService.requestEmailVerify({
+        email,
+        frontend_url: window.location.origin,
+      });
       if (result.message === ERRORS.ALREADY_VERIFIED) {
         notificationService.success({
           title: "Email already verified",
         });
-        navigate("/login");
+        navigate(ROUTERS.LOGIN);
       }
       setIsResend(true);
     } catch (e) {
       console.log(e);
+      setIsResend(false);
+      setCountdownKey((prev) => prev + 1);
     } finally {
       setIsSubmiting(false);
     }
@@ -48,7 +55,7 @@ const VerificationConfirm = () => {
 
   useEffect(() => {
     if (!token || !email) {
-      navigate("/signup");
+      navigate(ROUTERS.SIGNUP);
     }
   }, [navigate, token, email]);
 
@@ -90,6 +97,7 @@ const VerificationConfirm = () => {
                 <>
                   Resend Verification Email after{" "}
                   <Countdown
+                    key={countdownKey}
                     date={Date.now() + CONFIG_RESET_TIME}
                     renderer={({ seconds, minutes }) =>
                       `${pad(minutes)}:${pad(seconds)}`

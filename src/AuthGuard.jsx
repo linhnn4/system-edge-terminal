@@ -13,7 +13,6 @@ const AuthGuard = () => {
       info: state.user.info,
     })),
   );
-
   if (isLoggedIn && info?.is_first_login) {
     return <Navigate to={ROUTERS.CREATE_WORKSPACE} replace />;
   }
